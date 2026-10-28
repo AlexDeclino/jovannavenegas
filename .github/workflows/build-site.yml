@@ -1,7 +1,7 @@
 # Rebuilds index.html from Sanity. Triggered by the Sanity "publish" webhook
 # (repository_dispatch), by changes to the template or build code, or by hand
-# from the Actions tab. With the PREVIEW_PASSWORD repository secret set, it also
-# rebuilds the password-protected /preview/ page.
+# from the Actions tab. While the PREVIEW_PASSWORD repository secret is set, the page is
+# built behind that password. Delete the secret and rerun to launch publicly.
 name: Build site from Sanity
 
 on:
@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['cms/template.html', 'cms/preview-template.html', 'cms/sections.js', 'cms/project.js', 'cms/scripts/*.mjs']
+    paths: ['cms/template.html', 'cms/sections.js', 'cms/project.js', 'cms/scripts/*.mjs']
 
 permissions:
   contents: write
@@ -32,7 +32,7 @@ jobs:
           PREVIEW_PASSWORD: ${{ secrets.PREVIEW_PASSWORD }}
       - name: Commit the site if it changed
         run: |
-          git add index.html preview
+          git add index.html
           git diff --cached --quiet && { echo "No changes"; exit 0; }
           git config user.name "sanity-publish"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

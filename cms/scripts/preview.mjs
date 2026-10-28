@@ -1,4 +1,4 @@
-// Wraps a page in a password gate for /preview/. The page is encrypted
+// Wraps the page in a password gate until launch. The page is encrypted
 // (PBKDF2 + AES-GCM), so its content can't be read from the file without
 // the password. The password itself is never written to the repo.
 const ITERATIONS = 250000
@@ -26,7 +26,7 @@ const gatePage = (payload) => `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Preview</title>
+<title>Jovanna Venegas</title>
 <style>
 body{margin:0;background:#fff;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:13px;line-height:1.4;letter-spacing:0.01em;text-transform:uppercase;color:#000}
 form{box-sizing:border-box;max-width:1440px;margin:0 auto;padding:48px 5vw;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
@@ -39,7 +39,7 @@ p{margin:0;color:#444;min-height:1.4em}
 </head>
 <body>
 <form id="gate">
-<h1>PREVIEW</h1>
+<h1>JOVANNA VENEGAS</h1>
 <input id="pw" type="password" placeholder="PASSWORD" autocomplete="current-password" autofocus>
 <button type="submit">ENTER</button>
 <p id="msg"></p>
