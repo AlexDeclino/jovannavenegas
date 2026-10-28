@@ -1,0 +1,17 @@
+{
+  "name": "jovannavenegas-cms",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "sanity dev",
+    "deploy": "sanity deploy",
+    "export-rows": "node scripts/export-rows.mjs",
+    "build-site": "node scripts/build-site.mjs"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "sanity": "^6.20.0",
+    "styled-components": "^6.1.18"
+  }
+}
