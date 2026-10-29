@@ -7,7 +7,7 @@
 <meta name="description" content="Jovanna Venegas is Curator at SculptureCenter, New York. Exhibitions, juries, talks, publications and experience.">
 <meta property="og:title" content="Jovanna Venegas — Curator">
 <meta property="og:description" content="Curator at SculptureCenter, New York.">
-<style>:root{--bg:#ffffff;--fg:#000000;--font:Helvetica,Arial,Verdana,sans-serif;--size:13.25px;--row:1px}</style>
+<style>:root{--bg:#ffffff;--fg:#000000;--font:Helvetica,Arial,Verdana,sans-serif;--size:13.25px;--row:0px;--hl:#000000;--hl-fg:#ffffff}</style>
 <style>
 /* Layout follows jetset.nl. Colors, font, size and row spacing come from Settings in Sanity. */
 body{margin:0;padding:0 1em;background:var(--bg);color:var(--fg);font-family:var(--font);font-size:var(--size);line-height:1.4}
@@ -19,26 +19,29 @@ a:hover,a:focus,a:active{text-decoration:underline overline}
 @media (min-width:620px){.container{max-width:760px}}
 @media (min-width:961px){.container{max-width:1088px}}
 @media (min-width:1281px){.container{max-width:1700px}}
-.menufield{margin-bottom:2em;text-transform:uppercase}
+.menufield{min-height:11em;text-transform:uppercase}
 .menufield .name{font-weight:700}
 .menu{list-style:none;margin-top:20px}
 .menu a{text-decoration:none}
 .menu a:hover{text-decoration:underline}
 .menu .current{font-weight:700}
 .r{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr) minmax(0,2fr) minmax(0,2fr) minmax(0,2fr) minmax(0,2fr);column-gap:2em;padding:var(--row) 0}
-.r span:first-child{white-space:nowrap}
-.hd{font-weight:700;padding:0;border-bottom:1px solid var(--fg);margin-bottom:var(--row)}
+.r > span:first-child{white-space:nowrap}
+.hd{font-weight:700;padding:0;border-bottom:1px solid var(--fg);margin:8px 0 16px}
 .note{opacity:0.55;margin-top:2em}
+.upcoming .bar{display:block;background:var(--hl);color:var(--hl-fg);font-size:0.8em;line-height:1.3;padding:0 0.4em;margin:0.25em 0;min-height:1.3em;text-transform:uppercase}
 .about{max-width:40em}
 .about p + p{margin-top:1em}
 @media (max-width:619px){
+  .menufield{min-height:0;margin-bottom:2em}
   .hd{display:none}
   .r{grid-template-columns:minmax(0,1fr) auto;padding:calc(var(--row) + 2px) 0}
-  .r span{grid-column:1}
-  .r span:first-child{grid-column:2;grid-row:1;text-align:right}
-  .r span:nth-child(2){grid-row:1}
-  .r span:nth-child(n+3){opacity:0.55}
+  .r > span{grid-column:1}
+  .r > span:first-child{grid-column:2;grid-row:1;text-align:right}
+  .r > span:nth-child(2){grid-row:1}
+  .r > span:nth-child(n+3){opacity:0.55}
   .r .empty{display:none}
+  .upcoming > span:nth-child(n+3){display:none}
 }
 @media print{.r{break-inside:avoid}}
 </style>
@@ -74,8 +77,9 @@ a:hover,a:focus,a:active{text-decoration:underline overline}
 <div class="r" role="row"><span role="cell">2026</span><span role="cell">Origin of the Tiger, with Yu Ji</span><span role="cell">Talks, Panels and Public Programs</span><span role="cell">New York, NY</span><span role="cell">P·P·O·W</span><span role="cell">Conversation</span></div>
 <div class="r" role="row"><span role="cell">2026</span><span role="cell">Reel Life Performantz, with Pat Oleszko and Drew Sawyer</span><span role="cell">Talks, Panels and Public Programs</span><span role="cell">New York, NY</span><span role="cell">Whitney Museum of American Art</span><span role="cell">Conversation</span></div>
 <div class="r" role="row"><span role="cell">2026*</span><span role="cell">Pat Oleszko: Fool Disclosure, Exhibition Catalogue</span><span role="cell">Texts and Publications</span><span role="cell">New York, NY</span><span role="cell">SculptureCenter</span><span role="cell">Co-editor</span></div>
+<div class="r" role="row"><span role="cell">2026</span><span role="cell">Guadalupe Rosales: East of the River Book Launch</span><span role="cell">Talks, Panels and Public Programs</span><span role="cell">New York, NY</span><span role="cell">Rizzoli Bookstore</span><span role="cell">Moderator</span></div>
 <div class="r" role="row"><span role="cell">2025</span><span role="cell">Luana Vitra: Amulets</span><span role="cell">Exhibitions</span><span role="cell">New York, NY</span><span role="cell">SculptureCenter</span><span role="cell">Curator</span></div>
-<div class="r" role="row"><span role="cell">2025</span><span role="cell">To Ignite Our Skin: Elaine Cameron-Weir, Patricia Ayres, Yu Ji</span><span role="cell">Exhibitions</span><span role="cell">New York, NY</span><span role="cell">SculptureCenter</span><span role="cell">Curator</span></div>
+<div class="r" role="row"><span role="cell">2025</span><span role="cell">to ignite our skin</span><span role="cell">Exhibitions</span><span role="cell">New York, NY</span><span role="cell">SculptureCenter</span><span role="cell">Curator</span></div>
 <div class="r" role="row"><span role="cell">2025</span><span role="cell">In Practice: Kevin Hernández Rosa</span><span role="cell">Exhibitions</span><span role="cell">New York, NY</span><span role="cell">SculptureCenter</span><span role="cell">Co-curator</span></div>
 <div class="r" role="row"><span role="cell">2025</span><span role="cell">In Practice: Coco Klockner</span><span role="cell">Exhibitions</span><span role="cell">New York, NY</span><span role="cell">SculptureCenter</span><span role="cell">Co-curator</span></div>
 <div class="r" role="row"><span role="cell">2025</span><span role="cell">Artist Residency</span><span role="cell">Juries, Reviews and Critiques</span><span role="cell">Fire Island, NY</span><span role="cell">Fire Island Art Residency</span><span role="cell">Juror</span></div>
@@ -83,8 +87,11 @@ a:hover,a:focus,a:active{text-decoration:underline overline}
 <div class="r" role="row"><span role="cell">2025</span><span role="cell">Core Residency Program</span><span role="cell">Juries, Reviews and Critiques</span><span role="cell">Houston, TX</span><span role="cell">Glassell School of Art, Museum of Fine Arts, Houston</span><span role="cell">Guest critic</span></div>
 <div class="r" role="row"><span role="cell">2025</span><span role="cell">Artist Critiques</span><span role="cell">Juries, Reviews and Critiques</span><span role="cell">Kansas City, MO</span><span role="cell">Charlotte Street Foundation</span><span role="cell">Guest critic</span></div>
 <div class="r" role="row"><span role="cell">2025*</span><span role="cell">Luana Vitra: Amulets, Exhibition Catalogue</span><span role="cell">Texts and Publications</span><span role="cell">New York, NY</span><span role="cell">SculptureCenter</span><span role="cell">Editor</span></div>
-<div class="r" role="row"><span role="cell">2024–PRESENT</span><span role="cell">Curator</span><span role="cell">Positions</span><span role="cell">New York, NY</span><span role="cell">SculptureCenter</span><span role="cell">Position</span></div>
-<div class="r" role="row"><span role="cell">2024</span><span role="cell">ASMA: Ideal Institution for Music</span><span role="cell">Exhibitions</span><span role="cell">New York, NY</span><span role="cell">SculptureCenter</span><span role="cell">Curator</span></div>
+<div class="r" role="row"><span role="cell">2025</span><span role="cell">Duffy Speaker Series</span><span role="cell">Talks, Panels and Public Programs</span><span role="cell">Detroit, MI</span><span role="cell">Wayne State University</span><span role="cell">Curatorial talk</span></div>
+<div class="r" role="row"><span role="cell">2025</span><span role="cell">Rafael Domenech Book Launch</span><span role="cell">Talks, Panels and Public Programs</span><span role="cell">New York, NY</span><span role="cell">SculptureCenter</span><span role="cell">Moderator</span></div>
+<div class="r" role="row"><span role="cell">2025</span><span role="cell">to ignite our skin Artist Talk</span><span role="cell">Talks, Panels and Public Programs</span><span role="cell">New York, NY</span><span role="cell">SculptureCenter</span><span role="cell">Moderator</span></div>
+<div class="r" role="row"><span role="cell">2024–PRESENT</span><span role="cell">Curator</span><span role="cell">Positions</span><span role="cell">New York, NY</span><span role="cell">SculptureCenter</span><span role="cell">Curator</span></div>
+<div class="r" role="row"><span role="cell">2024</span><span role="cell">ASMA: Ideal Space for Music</span><span role="cell">Exhibitions</span><span role="cell">New York, NY</span><span role="cell">SculptureCenter</span><span role="cell">Curator</span></div>
 <div class="r" role="row"><span role="cell">2024</span><span role="cell">Open Process: Alexa West</span><span role="cell">Exhibitions</span><span role="cell">New York, NY</span><span role="cell">SculptureCenter</span><span role="cell">Curator</span></div>
 <div class="r" role="row"><span role="cell">2024</span><span role="cell">Awards</span><span role="cell">Juries, Reviews and Critiques</span><span role="cell">New York, NY</span><span role="cell">National Academy of Design</span><span role="cell">Juror</span></div>
 <div class="r" role="row"><span role="cell">2023</span><span role="cell">Sitting on Chrome: Mario Ayala, Rafa Esparza, Guadalupe Rosales</span><span role="cell">Exhibitions</span><span role="cell">San Francisco, CA</span><span role="cell">SFMOMA</span><span role="cell">Co-curator with Maria Castro and Tomoko Kanamitsu</span></div>
@@ -107,14 +114,15 @@ a:hover,a:focus,a:active{text-decoration:underline overline}
 <div class="r" role="row"><span role="cell">2021</span><span role="cell">Introductions 2021</span><span role="cell">Juries, Reviews and Critiques</span><span role="cell">San Francisco, CA</span><span role="cell">Root Division</span><span role="cell">Juror</span></div>
 <div class="r" role="row"><span role="cell">2021</span><span role="cell">Bi-Annual Artist Portfolio Reviews</span><span role="cell">Juries, Reviews and Critiques</span><span role="cell">San José, CA</span><span role="cell">Institute of Contemporary Art San José</span><span role="cell">Reviewer</span></div>
 <div class="r" role="row"><span role="cell">2021</span><span role="cell">A Joy Unexpected</span><span role="cell">Mentorship and Teaching</span><span role="cell">San Francisco, CA</span><span role="cell">Root Division</span><span role="cell">Curatorial mentor</span></div>
-<div class="r" role="row"><span role="cell">2021*</span><span role="cell">Introductions, Exhibition Catalogue</span><span role="cell">Texts and Publications</span><span role="cell">San Francisco, CA</span><span role="cell">Root Division</span><span role="cell">Author</span></div>
+<div class="r" role="row"><span role="cell">2021</span><span role="cell">Introductions, Exhibition Catalogue</span><span role="cell">Texts and Publications</span><span role="cell">San Francisco, CA</span><span role="cell">Root Division</span><span role="cell">Author</span></div>
 <div class="r" role="row"><span role="cell">2020</span><span role="cell">Bay Area Walls: Twin Walls Mural Company</span><span role="cell">Exhibitions</span><span role="cell">San Francisco, CA</span><span role="cell">SFMOMA</span><span role="cell">Assistant curator</span></div>
 <div class="r" role="row"><span role="cell">2020</span><span role="cell">Bay Area Walls: Marcel Pardo Ariza and Juan Carlos Rodriguez Rivera</span><span role="cell">Exhibitions</span><span role="cell">San Francisco, CA</span><span role="cell">SFMOMA</span><span role="cell">Assistant curator</span></div>
-<div class="r" role="row"><span role="cell">2019</span><span role="cell">Soft Power</span><span role="cell">Exhibitions</span><span role="cell">San Francisco, CA</span><span role="cell">SFMOMA</span><span role="cell">Assistant curator</span></div>
+<div class="r" role="row"><span role="cell">2020</span><span role="cell">Critics’ Picks: Lydia Ourahmane</span><span role="cell">Texts and Publications</span><span role="cell">New York, NY</span><span role="cell">Artforum</span><span role="cell">Author</span></div>
+<div class="r" role="row"><span role="cell">2019</span><span role="cell">SOFT POWER</span><span role="cell">Exhibitions</span><span role="cell">San Francisco, CA</span><span role="cell">SFMOMA</span><span role="cell">Assistant curator</span></div>
 <div class="r" role="row"><span role="cell">2019</span><span role="cell">New Work: Rodney McMillian</span><span role="cell">Exhibitions</span><span role="cell">San Francisco, CA</span><span role="cell">SFMOMA</span><span role="cell">Curatorial assistant</span></div>
-<div class="r" role="row"><span role="cell">2019*</span><span role="cell">Soft Power, Exhibition Catalogue</span><span role="cell">Texts and Publications</span><span role="cell">San Francisco, CA</span><span role="cell">SFMOMA</span><span role="cell">Author</span></div>
+<div class="r" role="row"><span role="cell">2019</span><span role="cell">Jason Moran SOFT POWER Exhibition Catalogue</span><span role="cell">Texts and Publications</span><span role="cell">San Francisco, CA</span><span role="cell">SFMOMA</span><span role="cell">Author</span></div>
 <div class="r" role="row"><span role="cell">2018</span><span role="cell">New Work: Etel Adnan</span><span role="cell">Exhibitions</span><span role="cell">San Francisco, CA</span><span role="cell">SFMOMA</span><span role="cell">Curatorial assistant</span></div>
-<div class="r" role="row"><span role="cell">2017–2023</span><span role="cell">Curatorial Assistant to Associate Curator of Contemporary Art</span><span role="cell">Positions</span><span role="cell">San Francisco, CA</span><span role="cell">SFMOMA</span><span role="cell">Position</span></div>
+<div class="r" role="row"><span role="cell">2017–2023</span><span role="cell">Curatorial Assistant and later Associate Curator of Contemporary Art</span><span role="cell">Positions</span><span role="cell">San Francisco, CA</span><span role="cell">SFMOMA</span><span role="cell">Position</span></div>
 <div class="r" role="row"><span role="cell">2017</span><span role="cell">Program Intern</span><span role="cell">Previous Experience</span><span role="cell">New York, NY</span><span role="cell">e-flux</span><span role="cell">Internship</span></div>
 <div class="r" role="row"><span role="cell">2017</span><span role="cell">MA, Curatorial Practice (Mentor: Maria Lind)</span><span role="cell">Education</span><span role="cell">New York, NY</span><span role="cell">School of Visual Arts</span><span role="cell">Master of Arts</span></div>
 <div class="r" role="row"><span role="cell">2016–2017</span><span role="cell">Curatorial Intern</span><span role="cell">Previous Experience</span><span role="cell">New York, NY</span><span role="cell">Colección Patricia Phelps de Cisneros</span><span role="cell">Internship</span></div>
@@ -129,13 +137,9 @@ a:hover,a:focus,a:active{text-decoration:underline overline}
 <div class="r" role="row"><span role="cell">2008–2010</span><span role="cell">Public Programs Department</span><span role="cell">Previous Experience</span><span role="cell">Los Angeles, CA</span><span role="cell">Hammer Museum</span><span role="cell">Work-study</span></div>
 <div class="r" role="row"><span role="cell">TBC</span><span role="cell">Curatorial Leadership Summit</span><span role="cell">Talks, Panels and Public Programs</span><span role="cell">New York, NY</span><span role="cell">The Armory Show</span><span role="cell">Panelist</span></div>
 <div class="r" role="row"><span role="cell">TBC</span><span role="cell">Armory Show Live: Passages and Thresholds, with Jesús Hilario Reyes, Zenobia Lee, Gaëlle Choisne</span><span role="cell">Talks, Panels and Public Programs</span><span role="cell">New York, NY</span><span role="cell">The Armory Show</span><span role="cell">Moderator</span></div>
-<div class="r" role="row"><span role="cell">TBC</span><span role="cell">Guadalupe Rosales, East of the River Book Launch</span><span role="cell">Talks, Panels and Public Programs</span><span role="cell">New York, NY</span><span role="cell">Rizzoli Bookstore</span><span role="cell">Moderator</span></div>
 <div class="r" role="row"><span role="cell">TBC</span><span role="cell">Curators Professional Development Workshop, with Bernardo Mosqueira, Susanna Temkin, Robin Farrell</span><span role="cell">Talks, Panels and Public Programs</span><span role="cell">New York, NY</span><span role="cell">School of Visual Arts</span><span role="cell">Conversation</span></div>
-<div class="r" role="row"><span role="cell">TBC</span><span role="cell">Duffy Speaker Series</span><span role="cell">Talks, Panels and Public Programs</span><span role="cell">Detroit, MI</span><span role="cell">Wayne State University</span><span role="cell">Curatorial talk</span></div>
 <div class="r" role="row"><span role="cell">TBC</span><span role="cell">Master of Arts Student Organization</span><span role="cell">Talks, Panels and Public Programs</span><span role="cell">New York, NY</span><span role="cell">Hunter College</span><span role="cell">Curatorial talk</span></div>
 <div class="r" role="row"><span role="cell">TBC</span><span role="cell">Luana Vitra Book Launch, with Denise Ferreira da Silva</span><span role="cell">Talks, Panels and Public Programs</span><span role="cell">New York, NY</span><span role="cell">SculptureCenter</span><span role="cell">Moderator</span></div>
-<div class="r" role="row"><span role="cell">TBC</span><span role="cell">Rafael Domenech Book Launch</span><span role="cell">Talks, Panels and Public Programs</span><span role="cell">New York, NY</span><span role="cell">SculptureCenter</span><span role="cell">Moderator</span></div>
-<div class="r" role="row"><span role="cell">TBC</span><span role="cell">To Ignite Our Skin Artist Talk</span><span role="cell">Talks, Panels and Public Programs</span><span role="cell">New York, NY</span><span role="cell">SculptureCenter</span><span role="cell">Moderator</span></div>
 <div class="r" role="row"><span role="cell">TBC</span><span role="cell">Small World Cinema, with Jen Liu and Brian Kuan Wood</span><span role="cell">Talks, Panels and Public Programs</span><span role="cell">New York, NY</span><span role="cell">SculptureCenter</span><span role="cell">Moderator</span></div>
 <div class="r" role="row"><span role="cell">TBC</span><span role="cell">Who Benefits from Diversity: Institutional Equality Today, with Deja Belardo</span><span role="cell">Talks, Panels and Public Programs</span><span role="cell">Santo Domingo, Dominican Republic</span><span role="cell">MECA Art Fair</span><span role="cell">Conversation</span></div>
 <div class="r" role="row"><span role="cell">TBC</span><span role="cell">Panel with Victor Barragan, Karla Kaplun, Carla Fernández</span><span role="cell">Talks, Panels and Public Programs</span><span role="cell" class="empty">—</span><span role="cell">Talking Galleries</span><span role="cell">Moderator</span></div>
@@ -147,7 +151,6 @@ a:hover,a:focus,a:active{text-decoration:underline overline}
 <div class="r" role="row"><span role="cell">TBC</span><span role="cell">Radio Rumorosa, 20 Spanish-language Interviews with Artists Across the Border</span><span role="cell">Talks, Panels and Public Programs</span><span role="cell" class="empty">—</span><span role="cell">Nett Nett Radio</span><span role="cell">Host</span></div>
 <div class="r" role="row"><span role="cell">TBC</span><span role="cell">Catching Up! with Firelei Baez</span><span role="cell">Talks, Panels and Public Programs</span><span role="cell">San Francisco, CA</span><span role="cell">SFMOMA</span><span role="cell">Interviewer</span></div>
 <div class="r" role="row"><span role="cell">TBC</span><span role="cell">Un desafío en fragmentos: sobre Tanta curva de Rafa Esparza, Para Morelio Catalogue</span><span role="cell">Texts and Publications</span><span role="cell" class="empty">—</span><span role="cell" class="empty">—</span><span role="cell">Author</span></div>
-<div class="r" role="row"><span role="cell">TBC</span><span role="cell">Critics’ Picks: Lydia Ourahmane; Jason Moran</span><span role="cell">Texts and Publications</span><span role="cell">New York, NY</span><span role="cell">Artforum</span><span role="cell">Author</span></div>
 </div>
 <p class="note">* = Year taken from the matching exhibition. TBC = Year not given in the original CV.</p>
 

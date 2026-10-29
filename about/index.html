@@ -7,7 +7,7 @@
 <meta name="description" content="Jovanna Venegas is Curator at SculptureCenter, New York. Exhibitions, juries, talks, publications and experience.">
 <meta property="og:title" content="Jovanna Venegas — Curator">
 <meta property="og:description" content="Curator at SculptureCenter, New York.">
-<style>:root{--bg:#ffffff;--fg:#000000;--font:Helvetica,Arial,Verdana,sans-serif;--size:13.25px;--row:1px}</style>
+<style>:root{--bg:#ffffff;--fg:#000000;--font:Helvetica,Arial,Verdana,sans-serif;--size:13.25px;--row:0px;--hl:#000000;--hl-fg:#ffffff}</style>
 <style>
 /* Layout follows jetset.nl. Colors, font, size and row spacing come from Settings in Sanity. */
 body{margin:0;padding:0 1em;background:var(--bg);color:var(--fg);font-family:var(--font);font-size:var(--size);line-height:1.4}
@@ -19,26 +19,29 @@ a:hover,a:focus,a:active{text-decoration:underline overline}
 @media (min-width:620px){.container{max-width:760px}}
 @media (min-width:961px){.container{max-width:1088px}}
 @media (min-width:1281px){.container{max-width:1700px}}
-.menufield{margin-bottom:2em;text-transform:uppercase}
+.menufield{min-height:11em;text-transform:uppercase}
 .menufield .name{font-weight:700}
 .menu{list-style:none;margin-top:20px}
 .menu a{text-decoration:none}
 .menu a:hover{text-decoration:underline}
 .menu .current{font-weight:700}
 .r{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr) minmax(0,2fr) minmax(0,2fr) minmax(0,2fr) minmax(0,2fr);column-gap:2em;padding:var(--row) 0}
-.r span:first-child{white-space:nowrap}
-.hd{font-weight:700;padding:0;border-bottom:1px solid var(--fg);margin-bottom:var(--row)}
+.r > span:first-child{white-space:nowrap}
+.hd{font-weight:700;padding:0;border-bottom:1px solid var(--fg);margin:8px 0 16px}
 .note{opacity:0.55;margin-top:2em}
+.upcoming .bar{display:block;background:var(--hl);color:var(--hl-fg);font-size:0.8em;line-height:1.3;padding:0 0.4em;margin:0.25em 0;min-height:1.3em;text-transform:uppercase}
 .about{max-width:40em}
 .about p + p{margin-top:1em}
 @media (max-width:619px){
+  .menufield{min-height:0;margin-bottom:2em}
   .hd{display:none}
   .r{grid-template-columns:minmax(0,1fr) auto;padding:calc(var(--row) + 2px) 0}
-  .r span{grid-column:1}
-  .r span:first-child{grid-column:2;grid-row:1;text-align:right}
-  .r span:nth-child(2){grid-row:1}
-  .r span:nth-child(n+3){opacity:0.55}
+  .r > span{grid-column:1}
+  .r > span:first-child{grid-column:2;grid-row:1;text-align:right}
+  .r > span:nth-child(2){grid-row:1}
+  .r > span:nth-child(n+3){opacity:0.55}
   .r .empty{display:none}
+  .upcoming > span:nth-child(n+3){display:none}
 }
 @media print{.r{break-inside:avoid}}
 </style>

@@ -14,7 +14,9 @@ export const DEFAULT_SETTINGS = {
   textColor: {hex: '#000000'},
   font: 'helvetica',
   fontSize: 13.25,
-  rowSpacing: 3,
+  rowSpacing: 0,
+  highlightColor: {hex: '#000000'},
+  highlightTextColor: {hex: '#ffffff'},
 }
 
 export const settings = {
@@ -43,10 +45,12 @@ export const settings = {
       name: 'rowSpacing',
       title: 'Entries vertical spacing',
       type: 'number',
-      description: 'Space above and below each entry, in pixels. Default 3.',
+      description: 'Extra space above and below each entry, in pixels. 0 matches jetset.nl.',
       initialValue: DEFAULT_SETTINGS.rowSpacing,
       validation: (rule) => rule.min(0).max(40),
     },
+    {name: 'highlightColor', title: 'Upcoming highlight color', type: 'color', options: {disableAlpha: true}, initialValue: DEFAULT_SETTINGS.highlightColor},
+    {name: 'highlightTextColor', title: 'Upcoming highlight text color', type: 'color', options: {disableAlpha: true}, initialValue: DEFAULT_SETTINGS.highlightTextColor},
   ],
   preview: {prepare: () => ({title: 'Settings'})},
 }

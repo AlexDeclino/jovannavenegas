@@ -33,6 +33,10 @@ function compare(a, b) {
 
 const row = (role, cells) => `<div class="r${role === 'columnheader' ? ' hd' : ''}" role="row">${cells.map((c) => `<span role="${role}"${c === '—' ? ' class="empty"' : ''}>${c}</span>`).join('')}</div>`
 
+// Upcoming entries show only the year. The other fields are never written to the page.
+const upcomingRow = (e) =>
+  `<div class="r upcoming" role="row"><span role="cell">${cell(e.year)}</span>${['UPCOMING', '', '', '', ''].map((t) => `<span role="cell"><span class="bar">${t}</span></span>`).join('')}</div>`
+
 const docs = await loadDocs(process.argv[2])
 const entries = docs.filter((e) => e._type === 'entry').sort(compare)
 const shownNotes = [
@@ -43,7 +47,7 @@ const shownNotes = [
 const table = [
   `<div role="table" aria-label="CV">`,
   row('columnheader', HEADER.map((h) => escape(h.toUpperCase()))),
-  ...entries.map((e) => row('cell', [e.year, e.project, e.category, e.location, e.space, e.scope].map(cell))),
+  ...entries.map((e) => (e.upcoming ? upcomingRow(e) : row('cell', [e.year, e.project, e.category, e.location, e.space, e.scope].map(cell)))),
   `</div>`,
   ...(shownNotes.length ? [`<p class="note">${escape(shownNotes.join(' '))}</p>`] : []),
 ].join('\n')
@@ -59,7 +63,7 @@ const settings = {...DEFAULT_SETTINGS, ...Object.fromEntries(Object.entries(docs
 const font = FONTS[settings.font] ?? FONTS[DEFAULT_SETTINGS.font]
 const head = [
   ...(font.google ? [`<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=${font.google}&amp;display=swap">`] : []),
-  `<style>:root{--bg:${settings.backgroundColor?.hex ?? '#fff'};--fg:${settings.textColor?.hex ?? '#000'};--font:${font.stack};--size:${Number(settings.fontSize)}px;--row:${Number(settings.rowSpacing)}px}</style>`,
+  `<style>:root{--bg:${settings.backgroundColor?.hex ?? '#fff'};--fg:${settings.textColor?.hex ?? '#000'};--font:${font.stack};--size:${Number(settings.fontSize)}px;--row:${Number(settings.rowSpacing)}px;--hl:${settings.highlightColor?.hex ?? '#000'};--hl-fg:${settings.highlightTextColor?.hex ?? '#fff'}}</style>`,
 ].join('\n')
 const template = readFileSync(new URL('../template.html', import.meta.url), 'utf8').replace('<!-- SETTINGS -->', head)
 function writePage(path, current, content) {

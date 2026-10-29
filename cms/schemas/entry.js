@@ -8,6 +8,13 @@ export const entry = {
   type: 'document',
   fields: [
     {
+      name: 'upcoming',
+      title: 'Upcoming',
+      type: 'boolean',
+      description: 'Hides this entry on the site behind a highlight that says UPCOMING. Only the year shows.',
+      initialValue: false,
+    },
+    {
       name: 'year',
       title: 'Year',
       type: 'string',
@@ -51,15 +58,13 @@ export const entry = {
     },
     // Keeps imported rows in their original order within a year. New entries leave it empty.
     {name: 'order', type: 'number', hidden: true},
-    // Legacy: the old build grouped by section. Remove once the new build is live on GitHub.
-    {name: 'section', type: 'string', hidden: true},
   ],
   orderings: [{title: 'Year, newest first', name: 'yearDesc', by: [{field: 'year', direction: 'desc'}]}],
   preview: {
-    select: {project: 'project', year: 'year', category: 'category', space: 'space'},
-    prepare: ({project, year, category, space}) => ({
+    select: {project: 'project', year: 'year', category: 'category', space: 'space', upcoming: 'upcoming'},
+    prepare: ({project, year, category, space, upcoming}) => ({
       title: project,
-      subtitle: [year, category, space].filter(Boolean).join(' · '),
+      subtitle: [upcoming && 'UPCOMING', year, category, space].filter(Boolean).join(' · '),
     }),
   },
 }
