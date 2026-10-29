@@ -1,4 +1,4 @@
-# Rebuilds index.html from Sanity. Triggered by the Sanity "publish" webhook
+# Rebuilds index.html and about/index.html from Sanity. Triggered by the Sanity "publish" webhook
 # (repository_dispatch), by changes to the template or build code, or by hand
 # from the Actions tab.
 name: Build site from Sanity
@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['cms/template.html', 'cms/sections.js', 'cms/project.js', 'cms/scripts/*.mjs']
+    paths: ['cms/template.html', 'cms/schemas/settings.js', 'cms/project.js', 'cms/scripts/*.mjs']
 
 permissions:
   contents: write
@@ -29,7 +29,7 @@ jobs:
       - run: node cms/scripts/build-site.mjs
       - name: Commit the site if it changed
         run: |
-          git add index.html
+          git add index.html about
           git diff --cached --quiet && { echo "No changes"; exit 0; }
           git config user.name "sanity-publish"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

@@ -1,8 +1,12 @@
 import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
+import {colorInput} from '@sanity/color-input'
 import {entry} from './schemas/entry.js'
-import {SECTIONS} from './sections.js'
+import {about} from './schemas/about.js'
+import {settings} from './schemas/settings.js'
 import {PROJECT_ID, DATASET} from './project.js'
+
+const SINGLETONS = ['about', 'settings']
 
 export default defineConfig({
   name: 'default',
@@ -12,41 +16,38 @@ export default defineConfig({
   plugins: [
     structureTool({
       title: 'CV',
-      // One sidebar item per section, each listing only that section's entries.
       structure: (S) =>
         S.list()
-          .title('CV sections')
-          .items(
-            SECTIONS.map(({value, title}) =>
-              S.listItem()
-                .id(value)
-                .title(title)
-                .child(
-                  S.documentList()
-                    .id(value)
-                    .title(title)
-                    .schemaType('entry')
-                    .filter('_type == "entry" && section == $section')
-                    .params({section: value})
-                    .defaultOrdering([{field: 'year', direction: 'desc'}])
-                    .initialValueTemplates([S.initialValueTemplateItem('entry-in-section', {section: value})]),
-                ),
-            ),
-          ),
+          .title('Content')
+          .items([
+            S.listItem().id('about').title('About').child(S.document().schemaType('about').documentId('about').title('About')),
+            S.listItem()
+              .id('entries')
+              .title('Entries')
+              .child(
+                S.documentTypeList('entry')
+                  .title('Entries')
+                  .defaultOrdering([{field: 'year', direction: 'desc'}]),
+              ),
+            S.divider(),
+            S.listItem().id('settings').title('Settings').child(S.document().schemaType('settings').documentId('settings').title('Settings')),
+          ]),
     }),
+    colorInput(),
   ],
   schema: {
-    types: [entry],
-    // "New entry" inside a section pre-fills that section.
-    templates: (prev) => [
-      ...prev.filter((t) => t.schemaType !== 'entry'),
-      {
-        id: 'entry-in-section',
-        title: 'Entry',
-        schemaType: 'entry',
-        parameters: [{name: 'section', type: 'string'}],
-        value: ({section}) => ({section}),
-      },
-    ],
+    types: [entry, about, settings],
+    // About and Settings exist once and can't be created again.
+    templates: (prev) => prev.filter((t) => !SINGLETONS.includes(t.schemaType)),
+  },
+  document: {
+    // Put Delete right under Publish in the arrow menu of every entry. About and
+    // Settings can't be deleted or duplicated.
+    actions: (prev, {schemaType}) => {
+      if (SINGLETONS.includes(schemaType)) return prev.filter(({action}) => !['delete', 'duplicate', 'unpublish'].includes(action))
+      const del = prev.find(({action}) => action === 'delete')
+      const rest = prev.filter(({action}) => action !== 'delete')
+      return del ? [rest[0], del, ...rest.slice(1)] : prev
+    },
   },
 })

@@ -7,34 +7,54 @@
 <meta name="description" content="Jovanna Venegas is Curator at SculptureCenter, New York. Exhibitions, juries, talks, publications and experience.">
 <meta property="og:title" content="Jovanna Venegas — Curator">
 <meta property="og:description" content="Curator at SculptureCenter, New York.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&amp;display=swap">
+<!-- SETTINGS -->
 <style>
-body{margin:0;background:#fff}
-a{color:#000}a:hover{color:#555}
-.cv{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:13.25px;line-height:1.4;color:#000;text-transform:uppercase}
-.cv h1,.cv h2,.cv p{margin:0;font-size:inherit;font-weight:700}
-.cv p{font-weight:400}
-.sec{display:flex;flex-direction:column;gap:12px}
-.box{overflow-x:auto}
-.t{min-width:900px}
-.r{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr) minmax(0,2fr) minmax(0,2fr) minmax(0,2fr);column-gap:24px;padding:7px 0}
-.r + .r{border-top:1px solid #000}
-.hd{font-weight:700}
-.note{color:#444}
-@media print{.box{overflow:visible}.r{break-inside:avoid}.cv h2{break-after:avoid}}
+/* Layout follows jetset.nl. Colors, font, size and row spacing come from Settings in Sanity. */
+body{margin:0;padding:0 1em;background:var(--bg);color:var(--fg);font-family:var(--font);font-size:var(--size);line-height:1.4}
+h1,h2,p,ul{margin:0;padding:0;font-size:1em;font-weight:400}
+a{color:var(--fg);text-decoration:underline}
+a:hover,a:focus,a:active{text-decoration:underline overline}
+.container{margin:1em auto}
+@media (min-width:320px){.container{max-width:600px}}
+@media (min-width:620px){.container{max-width:760px}}
+@media (min-width:961px){.container{max-width:1088px}}
+@media (min-width:1281px){.container{max-width:1700px}}
+.menufield{margin-bottom:2em;text-transform:uppercase}
+.menufield .name{font-weight:700}
+.menu{list-style:none;margin-top:20px}
+.menu a{text-decoration:none}
+.menu a:hover{text-decoration:underline}
+.menu .current{font-weight:700}
+.r{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr) minmax(0,2fr) minmax(0,2fr) minmax(0,2fr) minmax(0,2fr);column-gap:2em;padding:var(--row) 0}
+.r span:first-child{white-space:nowrap}
+.hd{font-weight:700;padding:0;border-bottom:1px solid var(--fg);margin-bottom:var(--row)}
+.note{opacity:0.55;margin-top:2em}
+.about{max-width:40em}
+.about p + p{margin-top:1em}
+@media (max-width:619px){
+  .hd{display:none}
+  .r{grid-template-columns:minmax(0,1fr) auto;padding:calc(var(--row) + 2px) 0}
+  .r span{grid-column:1}
+  .r span:first-child{grid-column:2;grid-row:1;text-align:right}
+  .r span:nth-child(2){grid-row:1}
+  .r span:nth-child(n+3){opacity:0.55}
+  .r .empty{display:none}
+}
+@media print{.r{break-inside:avoid}}
 </style>
 </head>
 <body>
-<div class="cv" style="box-sizing: border-box; max-width: 1440px; margin: 0 auto; padding: 48px 5vw 96px; display: flex; flex-direction: column; gap: 56px">
+<div class="container">
 
-<div style="display: flex; flex-direction: column; gap: 4px">
-<h1>JOVANNA VENEGAS</h1>
-<p>CURATOR, SCULPTURECENTER · NEW YORK, NY</p>
+<div class="menufield">
+<h1 class="name">Jovanna Venegas</h1>
+<p>Curator, SculptureCenter · New York, NY</p>
+<ul class="menu">
+<!-- MENU -->
+</ul>
 </div>
 
-<!-- SECTIONS -->
+<!-- CONTENT -->
 
 </div>
 </body>
