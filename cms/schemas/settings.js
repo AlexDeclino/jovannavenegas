@@ -10,13 +10,13 @@ export const FONTS = {
 }
 
 export const DEFAULT_SETTINGS = {
-  backgroundColor: {hex: '#ffffff'},
-  textColor: {hex: '#000000'},
+  backgroundColor: '#ffffff',
+  textColor: '#000000',
   font: 'helvetica',
   fontSize: 13.25,
   rowSpacing: 0,
-  highlightColor: {hex: '#000000'},
-  highlightTextColor: {hex: '#ffffff'},
+  highlightColor: '#000000',
+  highlightTextColor: '#ffffff',
 }
 
 export const settings = {
@@ -31,8 +31,8 @@ export const settings = {
       description: 'Used by the Email link in the footer. Leave empty to hide the link.',
       validation: (rule) => rule.email(),
     },
-    {name: 'backgroundColor', title: 'Background color', type: 'color', options: {disableAlpha: true}, initialValue: DEFAULT_SETTINGS.backgroundColor},
-    {name: 'textColor', title: 'Text color', type: 'color', options: {disableAlpha: true}, description: 'Also used for lines and links.', initialValue: DEFAULT_SETTINGS.textColor},
+    {name: 'backgroundColor', title: 'Background color', type: 'hexColor', description: 'Hex color, e.g. #ffffff. Click the swatch to pick one.', initialValue: DEFAULT_SETTINGS.backgroundColor},
+    {name: 'textColor', title: 'Text color', type: 'hexColor', description: 'Also used for lines and links.', initialValue: DEFAULT_SETTINGS.textColor},
     {
       name: 'font',
       title: 'Font',
@@ -56,8 +56,8 @@ export const settings = {
       initialValue: DEFAULT_SETTINGS.rowSpacing,
       validation: (rule) => rule.min(0).max(40),
     },
-    {name: 'highlightColor', title: 'Upcoming highlight color', type: 'color', options: {disableAlpha: true}, initialValue: DEFAULT_SETTINGS.highlightColor},
-    {name: 'highlightTextColor', title: 'Upcoming highlight text color', type: 'color', options: {disableAlpha: true}, initialValue: DEFAULT_SETTINGS.highlightTextColor},
+    {name: 'highlightColor', title: 'Upcoming highlight color', type: 'hexColor', initialValue: DEFAULT_SETTINGS.highlightColor},
+    {name: 'highlightTextColor', title: 'Upcoming highlight text color', type: 'hexColor', initialValue: DEFAULT_SETTINGS.highlightTextColor},
   ],
   preview: {prepare: () => ({title: 'Settings'})},
 }

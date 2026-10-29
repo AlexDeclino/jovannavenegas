@@ -61,9 +61,14 @@ const MENU = [
 // Settings from Sanity become CSS variables (and a Google Fonts link for web fonts).
 const settings = {...DEFAULT_SETTINGS, ...Object.fromEntries(Object.entries(docs.find((d) => d._id === 'settings') ?? {}).filter(([, v]) => v != null))}
 const font = FONTS[settings.font] ?? FONTS[DEFAULT_SETTINGS.font]
+// Colors are hex strings; anything else falls back to the default.
+const color = (key) => {
+  const value = typeof settings[key] === 'string' ? settings[key] : settings[key]?.hex
+  return /^#[0-9a-f]{3,8}$/i.test(value ?? '') ? value : DEFAULT_SETTINGS[key]
+}
 const head = [
   ...(font.google ? [`<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=${font.google}&amp;display=swap">`] : []),
-  `<style>:root{--bg:${settings.backgroundColor?.hex ?? '#fff'};--fg:${settings.textColor?.hex ?? '#000'};--font:${font.stack};--size:${Number(settings.fontSize)}px;--row:${Number(settings.rowSpacing)}px;--hl:${settings.highlightColor?.hex ?? '#000'};--hl-fg:${settings.highlightTextColor?.hex ?? '#fff'}}</style>`,
+  `<style>:root{--bg:${color('backgroundColor')};--fg:${color('textColor')};--font:${font.stack};--size:${Number(settings.fontSize)}px;--row:${Number(settings.rowSpacing)}px;--hl:${color('highlightColor')};--hl-fg:${color('highlightTextColor')}}</style>`,
 ].join('\n')
 const template = readFileSync(new URL('../template.html', import.meta.url), 'utf8').replace('<!-- SETTINGS -->', head)
 const footer = [
@@ -96,7 +101,7 @@ header .name{font-weight:700}
 .r > span:first-child{white-space:nowrap}
 .hd{font-weight:700;border-bottom:1px solid #000;margin-bottom:6px}
 .empty{color:transparent}
-.bar{display:block;background:${settings.highlightColor?.hex ?? '#000'};color:${settings.highlightTextColor?.hex ?? '#fff'};font-size:0.8em;line-height:1.3;padding:0 0.4em;margin:0.25em 0;min-height:1.3em;text-transform:uppercase}
+.bar{display:block;background:${color('highlightColor')};color:${color('highlightTextColor')};font-size:0.8em;line-height:1.3;padding:0 0.4em;margin:0.25em 0;min-height:1.3em;text-transform:uppercase}
 </style></head><body>
 <header><p class="name">Jovanna Venegas</p><p>Curator, SculptureCenter · New York, NY</p></header>
 ${table}

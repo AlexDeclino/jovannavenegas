@@ -1,9 +1,9 @@
 import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
-import {colorInput} from '@sanity/color-input'
 import {entry} from './schemas/entry.js'
 import {about} from './schemas/about.js'
 import {settings} from './schemas/settings.js'
+import {hexColor} from './schemas/hexColor.jsx'
 import {PROJECT_ID, DATASET} from './project.js'
 
 const SINGLETONS = ['about', 'settings']
@@ -33,10 +33,9 @@ export default defineConfig({
             S.listItem().id('settings').title('Settings').child(S.document().schemaType('settings').documentId('settings').title('Settings')),
           ]),
     }),
-    colorInput(),
   ],
   schema: {
-    types: [entry, about, settings],
+    types: [entry, about, settings, hexColor],
     // About and Settings exist once and can't be created again.
     templates: (prev) => prev.filter((t) => !SINGLETONS.includes(t.schemaType)),
   },
