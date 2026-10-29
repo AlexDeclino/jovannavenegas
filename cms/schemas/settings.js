@@ -24,6 +24,13 @@ export const settings = {
   title: 'Settings',
   type: 'document',
   fields: [
+    {
+      name: 'email',
+      title: 'Email address',
+      type: 'string',
+      description: 'Used by the Email link in the footer. Leave empty to hide the link.',
+      validation: (rule) => rule.email(),
+    },
     {name: 'backgroundColor', title: 'Background color', type: 'color', options: {disableAlpha: true}, initialValue: DEFAULT_SETTINGS.backgroundColor},
     {name: 'textColor', title: 'Text color', type: 'color', options: {disableAlpha: true}, description: 'Also used for lines and links.', initialValue: DEFAULT_SETTINGS.textColor},
     {
