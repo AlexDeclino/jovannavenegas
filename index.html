@@ -9,7 +9,8 @@
 <meta property="og:description" content="Curator at SculptureCenter, New York.">
 <style>:root{--bg:#fbbdff;--fg:#66001f;--font:Helvetica,Arial,Verdana,sans-serif;--size:13.25px;--row:0px;--line:#ffade1;--hover:#ffd1ee;--hl:#000000;--hl-fg:#ffffff}</style>
 <style>
-/* Layout follows jetset.nl. Colors, font, size and row spacing come from Settings in Sanity. */
+
+
 body{margin:0;padding:0 1em;background:var(--bg);color:var(--fg);font-family:var(--font);font-size:var(--size);line-height:1.4}
 h1,h2,p,ul{margin:0;padding:0;font-size:1em;font-weight:400}
 a{color:var(--fg);text-decoration:underline}
@@ -21,7 +22,7 @@ a:hover,a:focus,a:active{text-decoration:underline overline}
 @media (min-width:1281px){.container{max-width:1700px}}
 .menufield{min-height:11em;text-transform:uppercase}
 .menufield .name{font-weight:700}
-.menu{list-style:none;margin-top:20px}
+.menu{list-style:none;display:flex;justify-content:center;gap:1.5em;margin-bottom:0.5em}
 .menu a{text-decoration:none}
 .menu a:hover{text-decoration:underline}
 .menu .current{font-weight:700}
@@ -53,12 +54,6 @@ a:hover,a:focus,a:active{text-decoration:underline overline}
 
 <div class="menufield">
 <h1 class="name">Jovanna Venegas</h1>
-<p>Curator, SculptureCenter · New York, NY</p>
-<ul class="menu">
-<li><a href="/about/">About</a></li>
-<li><a class="current" href="/">Index</a></li>
-<li><a href="#gallery">Gallery</a></li>
-</ul>
 </div>
 
 <div role="table" aria-label="CV">
@@ -155,7 +150,14 @@ a:hover,a:focus,a:active{text-decoration:underline overline}
 <div class="r" role="row"><span role="cell">TBC</span><span role="cell">Un desafío en fragmentos: sobre Tanta curva de Rafa Esparza, Para Morelio Catalogue</span><span role="cell">Texts and Publications</span><span role="cell" class="empty">—</span><span role="cell" class="empty">—</span><span role="cell">Author</span></div>
 </div>
 
-<footer class="bottom">© 2026 - <a href="/cv.pdf" download="Jovanna-Venegas-CV.pdf">Export CV</a></footer>
+<footer class="bottom">
+<ul class="menu">
+<li><a href="/about/">About</a></li>
+<li><a class="current" href="/">Index</a></li>
+<li><a href="#gallery">Gallery</a></li>
+</ul>
+<p>© 2026 - <a href="/cv.pdf" download="Jovanna-Venegas-CV.pdf">Export CV</a></p>
+</footer>
 
 </div>
 </body>
