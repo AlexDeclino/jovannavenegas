@@ -31,6 +31,12 @@ export const settings = {
       description: 'Used by the Email link in the footer. Leave empty to hide the link.',
       validation: (rule) => rule.email(),
     },
+    {
+      name: 'phone',
+      title: 'Phone',
+      type: 'string',
+      description: 'Shown in the header of the exported CV PDF, e.g. +1 347-324-4446. Leave empty to hide it.',
+    },
     {name: 'backgroundColor', title: 'Background color', type: 'hexColor', description: 'Hex color, e.g. #ffffff. Click the swatch to pick one.', initialValue: DEFAULT_SETTINGS.backgroundColor},
     {name: 'textColor', title: 'Text color', type: 'hexColor', description: 'Also used for lines and links.', initialValue: DEFAULT_SETTINGS.textColor},
     {

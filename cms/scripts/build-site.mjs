@@ -39,8 +39,8 @@ function compare(a, b) {
 const row = (role, cells) => `<div class="r${role === 'columnheader' ? ' hd' : ''}" role="row">${cells.map((c) => `<span role="${role}"${c === '—' ? ' class="empty"' : ''}>${c}</span>`).join('')}</div>`
 
 // Upcoming entries show only the year. The other fields are never written to the page.
-const upcomingRow = (e) =>
-  `<div class="r upcoming" role="row"><span role="cell">${cell(e.year)}</span>${['UPCOMING', '', '', '', ''].map((t) => `<span role="cell"><span class="bar">${t}</span></span>`).join('')}</div>`
+const upcomingRow = (e, bars = 5) =>
+  `<div class="r upcoming" role="row"><span role="cell">${cell(e.year)}</span>${['UPCOMING', ...Array(bars - 1).fill('')].map((t) => `<span role="cell"><span class="bar">${t}</span></span>`).join('')}</div>`
 
 const docs = await loadDocs(process.argv[2])
 const entries = docs.filter((e) => e._type === 'entry').sort(compare)
@@ -87,24 +87,65 @@ writePage('index.html', 'Index', table)
 const aboutText = docs.find((d) => d._id === 'about')?.text ?? ''
 const paragraphs = aboutText.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean)
 writePage('about/index.html', 'About', `<div class="about">\n${paragraphs.map((p) => `<p>${escape(p).replace(/\n/g, '<br>')}</p>`).join('\n')}\n</div>`)
-// The PDF uses the same table, black on white, on US Letter.
+// The PDF groups entries under their category instead of showing a Category column.
+// Known categories keep the order of the original CV; any others follow in order of
+// their newest entry. Within a category, entries keep the site's order.
+const CATEGORY_ORDER = ['Positions', 'Exhibitions', 'Art Fairs and Curatorial Advisory', 'Juries, Reviews and Critiques', 'Mentorship and Teaching', 'Talks, Panels and Public Programs', 'Texts and Publications', 'Previous Experience', 'Education', 'Grants']
+const groups = new Map()
+for (const e of entries) {
+  const name = (e.category ?? '').trim() || 'Other'
+  const key = name.toLowerCase()
+  if (!groups.has(key)) groups.set(key, {name, entries: []})
+  groups.get(key).entries.push(e)
+}
+const rank = (g) => {
+  const i = CATEGORY_ORDER.findIndex((c) => c.toLowerCase() === g.name.toLowerCase())
+  return i === -1 ? CATEGORY_ORDER.length : i
+}
+const PDF_HEADER = ['Year', 'Project', 'Location', 'Institution', 'Role']
+const cvSections = [...groups.values()]
+  .map((g, i) => ({...g, i}))
+  .sort((a, b) => rank(a) - rank(b) || a.i - b.i)
+  .map((g) =>
+    [
+      `<section>`,
+      `<h2>${escape(g.name)}</h2>`,
+      row('columnheader', PDF_HEADER.map(escape)),
+      ...g.entries.map((e) => (e.upcoming ? upcomingRow(e, 4) : row('cell', [e.year, e.project, e.location, e.space, e.scope].map(cell)))),
+      `</section>`,
+    ].join('\n'),
+  )
+  .join('\n')
+
+// Contact line in the PDF header; email and phone come from Settings when set.
+const contact = [
+  'Curator, SculptureCenter · New York, NY',
+  ...(settings.email ? [`<a href="mailto:${escape(settings.email)}">${escape(settings.email)}</a>`] : []),
+  ...(settings.phone ? [escape(settings.phone)] : []),
+].join(' · ')
+
+// The PDF follows the original CV layout: black on white, all caps, US Letter.
 const cvHtml = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>Jovanna Venegas — CV</title>
 ${font.google ? `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=${font.google}&amp;display=swap">` : ''}
 <style>
-@page{size:letter;margin:0.5in}
-body{margin:0;font-family:${font.stack};font-size:8pt;line-height:1.4;color:#000;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-header{margin-bottom:2em}
-header p{margin:0;text-transform:uppercase}
+@page{size:letter;margin:0.4in 0.4in 0.5in}
+body{margin:0;font-family:${font.stack};font-size:7pt;line-height:1.4;color:#000;text-transform:uppercase;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+a{color:#000}
+header{margin-bottom:4em}
+header p{margin:0}
 header .name{font-weight:700}
-.r{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr) minmax(0,2fr) minmax(0,2fr) minmax(0,2fr) minmax(0,2fr);column-gap:1.5em;break-inside:avoid}
+section{margin-bottom:4.5em}
+h2{margin:0 0 1.8em;font-size:1em;font-weight:700;break-after:avoid}
+.r{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr) minmax(0,2fr) minmax(0,2fr) minmax(0,2fr);column-gap:2em;padding:0.45em 0 0.95em;border-bottom:0.5pt solid #000;break-inside:avoid}
 .r > span:first-child{white-space:nowrap}
-.hd{font-weight:700;border-bottom:1px solid #000;margin-bottom:6px}
+.r:last-child{border-bottom:0}
+.hd{font-weight:700;padding-bottom:0.5em;break-after:avoid}
 .empty{color:transparent}
-.bar{display:block;background:${color('highlightColor')};color:${color('highlightTextColor')};font-size:0.8em;line-height:1.3;padding:0 0.4em;margin:0.25em 0;min-height:1.3em;text-transform:uppercase}
+.bar{display:block;background:${color('highlightColor')};color:${color('highlightTextColor')};font-size:0.85em;line-height:1.3;padding:0 0.4em;min-height:1.3em}
 </style></head><body>
-<header><p class="name">Jovanna Venegas</p><p>Curator, SculptureCenter · New York, NY</p></header>
-${table}
+<header><p class="name">Jovanna Venegas</p><p>${contact}</p></header>
+${cvSections}
 </body></html>`
 
 function findChrome() {
