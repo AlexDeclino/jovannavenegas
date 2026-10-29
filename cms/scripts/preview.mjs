@@ -28,10 +28,10 @@ const gatePage = (payload) => `<!doctype html>
 <meta name="robots" content="noindex, nofollow">
 <title>Jovanna Venegas</title>
 <style>
-body{margin:0;background:#fff;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:13px;line-height:1.4;letter-spacing:0.01em;text-transform:uppercase;color:#000}
+body{margin:0;background:#fff;font-family:Helvetica,Arial,Verdana,sans-serif;font-size:13.25px;line-height:1.4;text-transform:uppercase;color:#000}
 form{box-sizing:border-box;max-width:1440px;margin:0 auto;padding:48px 5vw;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
-h1{margin:0;font-size:13px;font-weight:700}
-input,button{font:inherit;text-transform:inherit;letter-spacing:inherit;color:#000;background:#fff;border:1px solid #000;border-radius:0;padding:6px 8px}
+h1{margin:0;font-size:inherit;font-weight:700}
+input,button{font:inherit;text-transform:inherit;color:#000;background:#fff;border:1px solid #000;border-radius:0;padding:6px 8px}
 input{width:240px;text-transform:none}
 button{cursor:pointer}
 p{margin:0;color:#444;min-height:1.4em}
