@@ -56,6 +56,20 @@ export const entry = {
       type: 'string',
       description: 'Her role (Curator, Co-curator with …, Juror, Moderator) or the kind of entry (Position, Internship, Grant).',
     },
+    {
+      name: 'link',
+      title: 'Link',
+      type: 'url',
+      description: 'Optional. Makes the entry clickable on the site (opens in a new tab). In the PDF only the project title links.',
+      validation: (rule) => rule.uri({scheme: ['http', 'https']}),
+    },
+    {
+      name: 'excludeFromPdf',
+      title: 'Exclude from PDF',
+      type: 'boolean',
+      description: 'Leaves this entry out of the exported CV. It still shows on the site.',
+      initialValue: false,
+    },
     // Keeps imported rows in their original order within a year. New entries leave it empty.
     {name: 'order', type: 'number', hidden: true},
   ],

@@ -37,6 +37,23 @@ function compare(a, b) {
 }
 
 const row = (role, cells) => `<div class="r${role === 'columnheader' ? ' hd' : ''}" role="row">${cells.map((c) => `<span role="${role}"${c === '—' ? ' class="empty"' : ''}>${c}</span>`).join('')}</div>`
+// Only http(s) links are used; anything else is ignored.
+const safeLink = (url) => (/^https?:\/\/\S+$/i.test((url ?? '').trim()) ? escape(url.trim()).replace(/"/g, '&quot;') : null)
+// On the site a linked entry is clickable as a whole row.
+const linkedRow = (cells, href) =>
+  `<a class="r" role="row" href="${href}" target="_blank" rel="noopener">${cells.map((c) => `<span role="cell"${c === '—' ? ' class="empty"' : ''}>${c}</span>`).join('')}</a>`
+const siteRow = (e) => {
+  const cells = [e.year, e.project, e.category, e.location, e.space, e.scope].map(cell)
+  const href = safeLink(e.link)
+  return href ? linkedRow(cells, href) : row('cell', cells)
+}
+// In the PDF only the project title links.
+const pdfRow = (e) => {
+  const href = safeLink(e.link)
+  const cells = [e.year, e.project, e.location, e.space, e.scope].map(cell)
+  if (href) cells[1] = `<a href="${href}">${cells[1]}</a>`
+  return row('cell', cells)
+}
 
 // Upcoming entries show only the year. The other fields are never written to the page.
 const upcomingRow = (e, bars = 5) =>
@@ -48,7 +65,7 @@ const entries = docs.filter((e) => e._type === 'entry').sort(compare)
 const table = [
   `<div role="table" aria-label="CV">`,
   row('columnheader', HEADER.map((h) => escape(h.toUpperCase()))),
-  ...entries.map((e) => (e.upcoming ? upcomingRow(e) : row('cell', [e.year, e.project, e.category, e.location, e.space, e.scope].map(cell)))),
+  ...entries.map((e) => (e.upcoming ? upcomingRow(e) : siteRow(e))),
   `</div>`,
 ].join('\n')
 
@@ -92,7 +109,7 @@ writePage('about/index.html', 'About', `<div class="about">\n${paragraphs.map((p
 // their newest entry. Within a category, entries keep the site's order.
 const CATEGORY_ORDER = ['Positions', 'Exhibitions', 'Art Fairs and Curatorial Advisory', 'Juries, Reviews and Critiques', 'Mentorship and Teaching', 'Talks, Panels and Public Programs', 'Texts and Publications', 'Previous Experience', 'Education', 'Grants']
 const groups = new Map()
-for (const e of entries) {
+for (const e of entries.filter((e) => !e.excludeFromPdf)) {
   const name = (e.category ?? '').trim() || 'Other'
   const key = name.toLowerCase()
   if (!groups.has(key)) groups.set(key, {name, entries: []})
@@ -111,7 +128,7 @@ const cvSections = [...groups.values()]
       `<section>`,
       `<h2>${escape(g.name)}</h2>`,
       row('columnheader', PDF_HEADER.map(escape)),
-      ...g.entries.map((e) => (e.upcoming ? upcomingRow(e, 4) : row('cell', [e.year, e.project, e.location, e.space, e.scope].map(cell)))),
+      ...g.entries.map((e) => (e.upcoming ? upcomingRow(e, 4) : pdfRow(e))),
       `</section>`,
     ].join('\n'),
   )
