@@ -68,7 +68,7 @@ const color = (key) => {
 }
 const head = [
   ...(font.google ? [`<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=${font.google}&amp;display=swap">`] : []),
-  `<style>:root{--bg:${color('backgroundColor')};--fg:${color('textColor')};--font:${font.stack};--size:${Number(settings.fontSize)}px;--row:${Number(settings.rowSpacing)}px;--hover:${color('hoverColor')};--hl:${color('highlightColor')};--hl-fg:${color('highlightTextColor')}}</style>`,
+  `<style>:root{--bg:${color('backgroundColor')};--fg:${color('textColor')};--font:${font.stack};--size:${Number(settings.fontSize)}px;--row:${Number(settings.rowSpacing)}px;--line:${color('lineColor')};--hover:${color('hoverColor')};--hl:${color('highlightColor')};--hl-fg:${color('highlightTextColor')}}</style>`,
 ].join('\n')
 const template = readFileSync(new URL('../template.html', import.meta.url), 'utf8').replace('<!-- SETTINGS -->', head)
 const footer = [

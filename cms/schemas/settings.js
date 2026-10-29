@@ -18,6 +18,7 @@ export const DEFAULT_SETTINGS = {
   highlightColor: '#000000',
   highlightTextColor: '#ffffff',
   hoverColor: '#eeeeee',
+  lineColor: '#dddddd',
 }
 
 export const settings = {
@@ -63,6 +64,7 @@ export const settings = {
       initialValue: DEFAULT_SETTINGS.rowSpacing,
       validation: (rule) => rule.min(0).max(40),
     },
+    {name: 'lineColor', title: 'Entry line color', type: 'hexColor', description: 'The thin line between entries.', initialValue: DEFAULT_SETTINGS.lineColor},
     {name: 'hoverColor', title: 'Entry hover color', type: 'hexColor', description: 'Background of an entry when the mouse is over it.', initialValue: DEFAULT_SETTINGS.hoverColor},
     {name: 'highlightColor', title: 'Upcoming highlight color', type: 'hexColor', initialValue: DEFAULT_SETTINGS.highlightColor},
     {name: 'highlightTextColor', title: 'Upcoming highlight text color', type: 'hexColor', initialValue: DEFAULT_SETTINGS.highlightTextColor},
