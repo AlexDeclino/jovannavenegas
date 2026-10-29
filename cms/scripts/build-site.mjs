@@ -1,12 +1,9 @@
 // Builds ../index.html from template.html and the entries stored in Sanity.
 //   node scripts/build-site.mjs                  reads entries from Sanity
 //   node scripts/build-site.mjs entries.ndjson   reads entries from a local file
-// With PREVIEW_PASSWORD set, the page is encrypted behind that password (pre-launch).
-// Without it, the page is public.
 import {readFileSync, writeFileSync} from 'node:fs'
 import {SECTIONS} from '../sections.js'
 import {PROJECT_ID, DATASET} from '../project.js'
-import {encryptPage} from './preview.mjs'
 
 const HEADER = ['YEAR', 'PROJECT', 'LOCATION', 'INSTITUTION', 'SCOPE']
 
@@ -53,6 +50,5 @@ const sections = SECTIONS.map((section) => {
 }).filter(Boolean)
 
 const page = readFileSync(new URL('../template.html', import.meta.url), 'utf8').replace('<!-- SECTIONS -->', sections.join('\n'))
-const password = process.env.PREVIEW_PASSWORD
-writeFileSync(new URL('../../index.html', import.meta.url), password ? await encryptPage(page, password) : page)
-console.log(`Built index.html with ${entries.length} entries${password ? ', behind the preview password' : ''}`)
+writeFileSync(new URL('../../index.html', import.meta.url), page)
+console.log(`Built index.html with ${entries.length} entries`)

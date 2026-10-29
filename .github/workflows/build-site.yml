@@ -1,7 +1,6 @@
 # Rebuilds index.html from Sanity. Triggered by the Sanity "publish" webhook
 # (repository_dispatch), by changes to the template or build code, or by hand
-# from the Actions tab. While the PREVIEW_PASSWORD repository secret is set, the page is
-# built behind that password. Delete the secret and rerun to launch publicly.
+# from the Actions tab.
 name: Build site from Sanity
 
 on:
@@ -28,8 +27,6 @@ jobs:
         with:
           node-version: 22
       - run: node cms/scripts/build-site.mjs
-        env:
-          PREVIEW_PASSWORD: ${{ secrets.PREVIEW_PASSWORD }}
       - name: Commit the site if it changed
         run: |
           git add index.html
