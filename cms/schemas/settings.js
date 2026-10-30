@@ -34,6 +34,14 @@ export const settings = {
       validation: (rule) => rule.email(),
     },
     {
+      name: 'profileLinks',
+      title: 'Profile links',
+      type: 'array',
+      of: [{type: 'url'}],
+      description: 'Her pages elsewhere (SculptureCenter bio, Instagram, LinkedIn…). Helps search engines connect this site to her name.',
+      validation: (rule) => rule.unique(),
+    },
+    {
       name: 'phone',
       title: 'Phone',
       type: 'string',

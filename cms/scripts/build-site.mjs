@@ -59,7 +59,7 @@ const entries = docs.filter((e) => e._type === 'entry').sort(compare)
 // While PLACEHOLDER_DETAILS is on, entries without a description or images show
 // lorem ipsum and grey boxes instead, so the layout can be judged. An upcoming entry
 // shows a highlight bar instead of its title, hides its other fields and doesn't open.
-const PLACEHOLDER_DETAILS = true
+const PLACEHOLDER_DETAILS = false
 const LOREM = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
   'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
@@ -128,18 +128,65 @@ const footer = [
   ...(settings.email ? [`<a href="mailto:${escape(settings.email)}">Email</a>`] : []),
   `<a href="/cv.pdf" download="Jovanna-Venegas-CV.pdf">Export CV</a>`,
 ].join(' - ')
-function writePage(path, current, content) {
+// Search and sharing: each page gets its own title, description and canonical
+// address, plus social preview tags. The index also carries schema.org Person data
+// so search engines can tie the site to her name and profiles.
+const SITE = 'https://jovannavenegas.com'
+const attr = (value) => escape(value).replace(/"/g, '&quot;')
+const profileLinks = (settings.profileLinks ?? []).filter((url) => /^https?:\/\/\S+$/i.test(url ?? ''))
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Jovanna Venegas',
+  jobTitle: 'Curator',
+  worksFor: {'@type': 'Organization', name: 'SculptureCenter', url: 'https://www.sculpture-center.org'},
+  address: {'@type': 'PostalAddress', addressLocality: 'New York', addressRegion: 'NY', addressCountry: 'US'},
+  url: `${SITE}/`,
+  ...(profileLinks.length ? {sameAs: profileLinks} : {}),
+}
+function headFor({title, description, path, jsonLd}) {
+  const url = `${SITE}/${path.replace(/index\.html$/, '')}`
+  return [
+    `<title>${escape(title)}</title>`,
+    `<meta name="description" content="${attr(description)}">`,
+    `<link rel="canonical" href="${url}">`,
+    `<meta property="og:type" content="website">`,
+    `<meta property="og:site_name" content="Jovanna Venegas">`,
+    `<meta property="og:title" content="${attr(title)}">`,
+    `<meta property="og:description" content="${attr(description)}">`,
+    `<meta property="og:url" content="${url}">`,
+    `<meta name="twitter:card" content="summary">`,
+    ...(jsonLd ? [`<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, '\\u003c')}</script>`] : []),
+  ].join('\n')
+}
+
+function writePage(path, current, content, head) {
   const menu = MENU.map(({title, href}) => `<li><a href="${href}"${title === current ? ' aria-current="page"' : ''}>${title}</a></li>`)
   const file = new URL(`../../${path}`, import.meta.url)
   mkdirSync(new URL('./', file), {recursive: true})
-  writeFileSync(file, template.replace('<!-- MENU -->', menu.join('\n')).replace('<!-- CONTENT -->', content).replace('<!-- FOOTER -->', footer))
+  writeFileSync(file, template.replace('<!-- HEAD -->', headFor({...head, path})).replace('<!-- MENU -->', menu.join('\n')).replace('<!-- CONTENT -->', content).replace('<!-- FOOTER -->', footer))
 }
 
-writePage('index.html', 'Index', table)
+writePage('index.html', 'Index', table, {
+  title: 'Jovanna Venegas — Curator',
+  description: 'Jovanna Venegas is Curator at SculptureCenter, New York. Exhibitions, juries, talks, publications and experience.',
+  jsonLd: person,
+})
 
 const aboutText = docs.find((d) => d._id === 'about')?.text ?? ''
 const paragraphs = aboutText.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean)
-writePage('about/index.html', 'About', `<div class="about">\n${paragraphs.map((p) => `<p>${escape(p).replace(/\n/g, '<br>')}</p>`).join('\n')}\n</div>`)
+writePage('about/index.html', 'About', `<div class="about">\n${paragraphs.map((p) => `<p>${escape(p).replace(/\n/g, '<br>')}</p>`).join('\n')}\n</div>`, {
+  title: 'About — Jovanna Venegas',
+  description: (paragraphs[0] ? aboutText.split(/\n\s*\n/)[0].trim() : 'About Jovanna Venegas, Curator at SculptureCenter, New York.').slice(0, 300),
+})
+
+// sitemap.xml and robots.txt for search engines.
+const today = new Date().toISOString().slice(0, 10)
+writeFileSync(
+  new URL('../../sitemap.xml', import.meta.url),
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${['', 'about/'].map((p) => `<url><loc>${SITE}/${p}</loc><lastmod>${today}</lastmod></url>`).join('\n')}\n</urlset>\n`,
+)
+writeFileSync(new URL('../../robots.txt', import.meta.url), `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`)
 // The PDF groups entries under their category instead of showing a Category column.
 // Known categories keep the order of the original CV; any others follow in order of
 // their newest entry. Within a category, entries keep the site's order.

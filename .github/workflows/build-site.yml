@@ -29,7 +29,7 @@ jobs:
       - run: node cms/scripts/build-site.mjs
       - name: Commit the site if it changed
         run: |
-          git add index.html about cv.pdf
+          git add index.html about cv.pdf sitemap.xml robots.txt
           git diff --cached --quiet && { echo "No changes"; exit 0; }
           git config user.name "sanity-publish"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
