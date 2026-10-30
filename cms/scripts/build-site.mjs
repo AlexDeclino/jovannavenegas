@@ -142,18 +142,80 @@ function writePage(path, current, content) {
 writePage('index.html', 'Index', table)
 
 // The gallery stacks each entry's images at full width, one project per block, with
-// no text or lines. Upcoming entries and entries without images are left
-// out (while PLACEHOLDER_DETAILS is on, entries without images show grey boxes).
+// no text or lines. Upcoming entries and entries without images are left out (while
+// PLACEHOLDER_DETAILS is on, they get placeholder photos and text). Clicking a
+// project's photos opens a caption bar at the bottom of the screen with its year,
+// title, institution and location; "More" shows the description and link. The text
+// sits hidden in each block and the script below copies it into the bar.
 const galleryBlocks = entries
   .map((e, i) => {
     if (e.upcoming) return ''
     let images = imagesOf(e, '100vw')
-    if (PLACEHOLDER_DETAILS && !images.length && !paragraphsOf(e.description).length) images = placeholders(e, i)
+    let paragraphs = paragraphsOf(e.description)
+    if (PLACEHOLDER_DETAILS && !images.length && !paragraphs.length) {
+      images = placeholders(e, i)
+      paragraphs = LOREM
+    }
     if (!images.length) return ''
-    return `<section class="g" aria-label="${escape((e.project ?? '').trim()).replace(/"/g, '&quot;')}"><div class="g-images">${images.join('')}</div></section>`
+    const title = escape((e.project ?? '').trim())
+    const href = safeLink(e.link)
+    const caption = rowCells([e.year, e.project, e.space, e.location].map((v) => escape((v ?? '').trim())))
+    const more = `<div class="cap-text">${paragraphs.map((p) => `<p>${p}</p>`).join('')}${href ? `<p><a href="${href}" target="_blank" rel="noopener">Link ↗</a></p>` : ''}</div>`
+    return [
+      `<section class="g">`,
+      `<button type="button" class="g-images" aria-label="Show details for ${title.replace(/"/g, '&quot;')}">${images.join('')}</button>`,
+      `<template class="g-caption">${caption}</template>`,
+      `<template class="g-more">${more}</template>`,
+      `</section>`,
+    ].join('')
   })
   .filter(Boolean)
-writePage('gallery/index.html', 'Gallery', `<div class="gallery">\n${galleryBlocks.join('\n')}\n</div>`)
+const captionBar = `<div class="cap" aria-live="polite" hidden>
+<div class="cap-inner">
+<div class="row cap-row"></div>
+<div class="cap-more" hidden></div>
+<div class="cap-actions"><button type="button" class="cap-toggle" aria-expanded="false">More</button><button type="button" class="cap-close">Close</button></div>
+</div>
+</div>
+<script>
+// Gallery caption bar: click a project's photos to show its caption, again to hide it.
+const bar = document.querySelector('.cap')
+const row = bar.querySelector('.cap-row')
+const more = bar.querySelector('.cap-more')
+const toggle = bar.querySelector('.cap-toggle')
+let current = null
+const setMore = (open) => {
+  more.hidden = !open
+  toggle.textContent = open ? 'Less' : 'More'
+  toggle.setAttribute('aria-expanded', String(open))
+  document.body.style.paddingBottom = bar.offsetHeight + 'px'
+}
+const hide = () => {
+  bar.classList.remove('open')
+  current?.querySelector('.g-images').setAttribute('aria-expanded', 'false')
+  current = null
+  document.body.style.paddingBottom = ''
+  setTimeout(() => { if (!current) bar.hidden = true }, 300)
+}
+const show = (section) => {
+  current?.querySelector('.g-images').setAttribute('aria-expanded', 'false')
+  current = section
+  row.innerHTML = section.querySelector('.g-caption').innerHTML
+  more.innerHTML = section.querySelector('.g-more').innerHTML
+  toggle.hidden = !more.textContent.trim()
+  section.querySelector('.g-images').setAttribute('aria-expanded', 'true')
+  bar.hidden = false
+  requestAnimationFrame(() => bar.classList.add('open'))
+  setMore(false)
+}
+for (const section of document.querySelectorAll('.g')) {
+  section.querySelector('.g-images').addEventListener('click', () => (current === section ? hide() : show(section)))
+}
+toggle.addEventListener('click', () => setMore(more.hidden))
+bar.querySelector('.cap-close').addEventListener('click', hide)
+addEventListener('keydown', (event) => { if (event.key === 'Escape' && current) hide() })
+</script>`
+writePage('gallery/index.html', 'Gallery', `<div class="gallery">\n${galleryBlocks.join('\n')}\n</div>\n${captionBar}`)
 const aboutText = docs.find((d) => d._id === 'about')?.text ?? ''
 const paragraphs = aboutText.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean)
 writePage('about/index.html', 'About', `<div class="about">\n${paragraphs.map((p) => `<p>${escape(p).replace(/\n/g, '<br>')}</p>`).join('\n')}\n</div>`)
