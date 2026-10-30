@@ -33,6 +33,10 @@ summary.row::-webkit-details-marker{display:none}
 summary.row:focus-visible{outline:1px dotted var(--fg);outline-offset:2px}
 @media (hover:hover){summary.row:hover{background:var(--hover);box-shadow:-0.35em 0 0 var(--hover),0.35em 0 0 var(--hover)}}
 details.e[open]{background:var(--hover);box-shadow:-0.35em 0 0 var(--hover),0.35em 0 0 var(--hover)}
+/* An open entry's row stays pinned at the top while scrolling through its panel. */
+details.e[open] > summary.row{position:sticky;top:0;z-index:1;background:var(--hover);box-shadow:-0.35em 0 0 var(--hover),0.35em 0 0 var(--hover)}
+.detail{cursor:pointer}
+.detail a{cursor:pointer}
 .detail{overflow:hidden}
 .detail .inner{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,4fr) minmax(0,2fr) minmax(0,1.6fr);column-gap:2em;padding:0.5em 0 2em}
 .detail .text{grid-column:2;max-width:36em}
@@ -174,21 +178,34 @@ details.e[open]{background:var(--hover);box-shadow:-0.35em 0 0 var(--hover),0.35
 </div>
 <script>
 // Slide entries open and closed. Without JavaScript they still open, just instantly.
+// An open entry closes from its row (pinned at the top while scrolling) or by a
+// click anywhere in its panel, except on links or while selecting text.
 const reduce = matchMedia('(prefers-reduced-motion: reduce)')
 for (const item of document.querySelectorAll('details.e')) {
   const panel = item.querySelector('.detail')
-  item.querySelector('summary').addEventListener('click', (event) => {
+  const close = () => {
+    // If the entry starts above the screen, line it up with the top first, so the
+    // pinned row stays put while the panel folds away.
+    const top = item.getBoundingClientRect().top
+    if (top < 0) window.scrollBy(0, top)
+    if (reduce.matches) { item.open = false; return }
+    item.dataset.busy = '1'
+    panel.animate([{height: panel.offsetHeight + 'px'}, {height: '0px'}], {duration: 350, easing: 'ease'}).onfinish = () => { item.open = false; delete item.dataset.busy }
+  }
+  const open = () => {
+    item.open = true
     if (reduce.matches) return
+    item.dataset.busy = '1'
+    panel.animate([{height: '0px'}, {height: panel.offsetHeight + 'px'}], {duration: 350, easing: 'ease'}).onfinish = () => delete item.dataset.busy
+  }
+  item.querySelector('summary').addEventListener('click', (event) => {
     event.preventDefault()
     if (item.dataset.busy) return
-    item.dataset.busy = '1'
-    const done = () => delete item.dataset.busy
-    if (item.open) {
-      panel.animate([{height: panel.offsetHeight + 'px'}, {height: '0px'}], {duration: 350, easing: 'ease'}).onfinish = () => { item.open = false; done() }
-    } else {
-      item.open = true
-      panel.animate([{height: '0px'}, {height: panel.offsetHeight + 'px'}], {duration: 350, easing: 'ease'}).onfinish = done
-    }
+    item.open ? close() : open()
+  })
+  panel.addEventListener('click', (event) => {
+    if (event.target.closest('a') || String(getSelection()) || item.dataset.busy) return
+    close()
   })
 }
 </script>
