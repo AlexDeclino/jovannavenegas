@@ -53,22 +53,25 @@ const upcomingRow = (e, bars = 5) =>
 const docs = await loadDocs(process.argv[2])
 const entries = docs.filter((e) => e._type === 'entry').sort(compare)
 
-// The site lists titles only, grouped by starting year (TBC last). The year shows on
-// the first entry of each group. A linked entry is clickable as a whole row; an
-// upcoming one shows a highlight bar instead of its title, and no link.
+// The site lists titles only, grouped by starting year (TBC last), each year as a
+// heading above its entries. A linked entry is clickable as a whole row; an upcoming
+// one shows a highlight bar instead of its title, and no link.
 const groupYear = (e) => (Number.isFinite(startYear(e.year)) ? String(startYear(e.year)) : 'TBC')
-const listRow = (e, yearLabel) => {
+const listRow = (e) => {
   const title = e.upcoming ? `<span class="bar">Upcoming</span>` : escape((e.project ?? '').trim())
-  const inner = `<span class="year">${yearLabel}</span><span class="title">${title}</span>`
   const href = !e.upcoming && safeLink(e.link)
   const cls = `e${e.upcoming ? ' upcoming' : ''}`
-  return href ? `<a class="${cls}" role="listitem" href="${href}" target="_blank" rel="noopener">${inner}</a>` : `<div class="${cls}" role="listitem">${inner}</div>`
+  return href ? `<a class="${cls}" role="listitem" href="${href}" target="_blank" rel="noopener">${title}</a>` : `<div class="${cls}" role="listitem">${title}</div>`
 }
-const table = [
-  `<div class="list" role="list" aria-label="CV">`,
-  ...entries.map((e, i) => listRow(e, i === 0 || groupYear(entries[i - 1]) !== groupYear(e) ? groupYear(e) : '')),
-  `</div>`,
-].join('\n')
+const years = []
+for (const e of entries) {
+  const year = groupYear(e)
+  if (years.at(-1)?.year !== year) years.push({year, entries: []})
+  years.at(-1).entries.push(e)
+}
+const table = years
+  .map(({year, entries}) => [`<section class="year-group">`, `<h2>${year}</h2>`, `<div class="list" role="list" aria-label="${year}">`, ...entries.map(listRow), `</div>`, `</section>`].join('\n'))
+  .join('\n')
 
 // Gallery has no page yet.
 const MENU = [
