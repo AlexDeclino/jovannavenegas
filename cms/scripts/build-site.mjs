@@ -133,8 +133,7 @@ function writePage(path, current, content) {
 
 writePage('index.html', 'Index', table)
 
-// The gallery stacks each entry's images, one project per block between dotted
-// lines, with no text. Upcoming entries and entries without images are left
+// The gallery stacks each entry's images, one project per block, with no text or lines. Upcoming entries and entries without images are left
 // out (while PLACEHOLDER_DETAILS is on, entries without images show grey boxes).
 const galleryBlocks = entries
   .map((e, i) => {
