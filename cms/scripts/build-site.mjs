@@ -71,7 +71,6 @@ const table = [
 
 // Gallery has no page yet.
 const MENU = [
-  {title: 'About', href: '/about/'},
   {title: 'Index', href: '/'},
   {title: 'Gallery', href: '#gallery'},
 ]
@@ -97,7 +96,7 @@ function writePage(path, current, content) {
   const menu = MENU.map(({title, href}) => `<li><a${title === current ? ' class="current"' : ''} href="${href}">${title}</a></li>`)
   const file = new URL(`../../${path}`, import.meta.url)
   mkdirSync(new URL('./', file), {recursive: true})
-  writeFileSync(file, template.replace('<!-- MENU -->', menu.join('\n')).replace('<!-- CONTENT -->', content).replace('<!-- FOOTER -->', footer))
+  writeFileSync(file, template.replace('<!-- MENU -->', menu.join('\n')).replace('<!-- ABOUT_LINK -->', `<a class="about-link${current === 'About' ? ' current' : ''}" href="/about/">About</a>`).replace('<!-- CONTENT -->', content).replace('<!-- FOOTER -->', footer))
 }
 
 writePage('index.html', 'Index', table)
