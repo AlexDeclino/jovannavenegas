@@ -65,15 +65,15 @@ const LOREM = [
   'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
 ]
 // Sanity image refs look like image-<id>-<width>x<height>-<format>.
-function imageTag(image, fallbackAlt, sizes = '(max-width: 619px) 100vw, 33vw') {
+function imageTag(image, fallbackAlt) {
   const match = /^image-([a-f0-9]+)-(\d+)x(\d+)-(\w+)$/.exec(image?.asset?._ref ?? '')
   if (!match) return ''
   const [, id, w, h, format] = match
   const src = `https://cdn.sanity.io/images/${PROJECT_ID}/${DATASET}/${id}-${w}x${h}.${format}`
   const alt = escape((image.alt ?? fallbackAlt ?? '').trim()).replace(/"/g, '&quot;')
-  return `<img src="${src}?w=1200&amp;auto=format" srcset="${src}?w=600&amp;auto=format 600w, ${src}?w=1200&amp;auto=format 1200w, ${src}?w=2000&amp;auto=format 2000w" sizes="${sizes}" width="${w}" height="${h}" alt="${alt}" loading="lazy">`
+  return `<img src="${src}?w=1200&amp;auto=format" srcset="${src}?w=600&amp;auto=format 600w, ${src}?w=1200&amp;auto=format 1200w, ${src}?w=2000&amp;auto=format 2000w" sizes="(max-width: 619px) 100vw, 33vw" width="${w}" height="${h}" alt="${alt}" loading="lazy">`
 }
-const imagesOf = (e, sizes) => (e.images ?? []).slice(0, 3).map((img) => imageTag(img, e.project, sizes)).filter(Boolean)
+const imagesOf = (e) => (e.images ?? []).slice(0, 3).map((img) => imageTag(img, e.project)).filter(Boolean)
 // Placeholder photos from picsum.photos, seeded by the entry id so each project keeps
 // the same pictures between builds. Shapes vary so stacks look realistic.
 const PLACEHOLDER_SHAPES = [[1600, 1200], [1200, 1500], [1600, 900], [1400, 1400]]
@@ -108,11 +108,9 @@ const listRow = (e, i) => {
 }
 const table = [`<div class="list" role="list" aria-label="CV">`, ...entries.map(listRow), `</div>`].join('\n')
 
-// Gallery has no page yet.
 const MENU = [
   {title: 'About', href: '/about/'},
   {title: 'Index', href: '/'},
-  {title: 'Gallery', href: '/gallery/'},
 ]
 // Settings from Sanity become CSS variables (and a Google Fonts link for web fonts).
 const settings = {...DEFAULT_SETTINGS, ...Object.fromEntries(Object.entries(docs.find((d) => d._id === 'settings') ?? {}).filter(([, v]) => v != null))}
@@ -141,83 +139,6 @@ function writePage(path, current, content) {
 
 writePage('index.html', 'Index', table)
 
-// The gallery shows every entry's images as tiles in one grid, project after project,
-// with no text or lines. Upcoming entries and entries without images are left out (while
-// PLACEHOLDER_DETAILS is on, they get placeholder photos and text). Clicking a
-// project's photo opens a caption bar at the bottom of the screen with its year,
-// title, institution and location; "More" shows the description and link. The text
-// sits hidden in each block and the script below copies it into the bar.
-const galleryBlocks = entries
-  .map((e, i) => {
-    if (e.upcoming) return ''
-    let images = imagesOf(e, '100vw')
-    let paragraphs = paragraphsOf(e.description)
-    if (PLACEHOLDER_DETAILS && !images.length && !paragraphs.length) {
-      images = placeholders(e, i)
-      paragraphs = LOREM
-    }
-    if (!images.length) return ''
-    const title = escape((e.project ?? '').trim())
-    const href = safeLink(e.link)
-    const caption = rowCells([e.year, e.project, e.space, e.location].map((v) => escape((v ?? '').trim())))
-    const more = `<div class="cap-text">${paragraphs.map((p) => `<p>${p}</p>`).join('')}${href ? `<p><a href="${href}" target="_blank" rel="noopener">Link ↗</a></p>` : ''}</div>`
-    const label = `Show details for ${title}`.replace(/"/g, '&quot;')
-    return [
-      `<section class="g">`,
-      ...images.map((img) => `<button type="button" class="tile" aria-label="${label}">${img}</button>`),
-      `<template class="g-caption">${caption}</template>`,
-      `<template class="g-more">${more}</template>`,
-      `</section>`,
-    ].join('')
-  })
-  .filter(Boolean)
-const captionBar = `<div class="cap" aria-live="polite" hidden>
-<div class="cap-inner">
-<div class="row cap-row"></div>
-<div class="cap-more" hidden></div>
-<div class="cap-actions"><button type="button" class="cap-toggle" aria-expanded="false">More</button><button type="button" class="cap-close">Close</button></div>
-</div>
-</div>
-<script>
-// Gallery caption bar: click a project's photo to show its caption, again to hide it.
-const bar = document.querySelector('.cap')
-const row = bar.querySelector('.cap-row')
-const more = bar.querySelector('.cap-more')
-const toggle = bar.querySelector('.cap-toggle')
-let current = null
-const setMore = (open) => {
-  more.hidden = !open
-  toggle.textContent = open ? 'Less' : 'More'
-  toggle.setAttribute('aria-expanded', String(open))
-  document.body.style.paddingBottom = bar.offsetHeight + 'px'
-}
-const tilesOf = (section) => section.querySelectorAll('.tile')
-const hide = () => {
-  bar.classList.remove('open')
-  current?.classList.remove('active')
-  current = null
-  document.body.style.paddingBottom = ''
-  setTimeout(() => { if (!current) bar.hidden = true }, 300)
-}
-const show = (section) => {
-  current?.classList.remove('active')
-  current = section
-  row.innerHTML = section.querySelector('.g-caption').innerHTML
-  more.innerHTML = section.querySelector('.g-more').innerHTML
-  toggle.hidden = !more.textContent.trim()
-  section.classList.add('active')
-  bar.hidden = false
-  requestAnimationFrame(() => bar.classList.add('open'))
-  setMore(false)
-}
-for (const section of document.querySelectorAll('.g')) {
-  for (const tile of tilesOf(section)) tile.addEventListener('click', () => (current === section ? hide() : show(section)))
-}
-toggle.addEventListener('click', () => setMore(more.hidden))
-bar.querySelector('.cap-close').addEventListener('click', hide)
-addEventListener('keydown', (event) => { if (event.key === 'Escape' && current) hide() })
-</script>`
-writePage('gallery/index.html', 'Gallery', `<div class="gallery">\n${galleryBlocks.join('\n')}\n</div>\n${captionBar}`)
 const aboutText = docs.find((d) => d._id === 'about')?.text ?? ''
 const paragraphs = aboutText.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean)
 writePage('about/index.html', 'About', `<div class="about">\n${paragraphs.map((p) => `<p>${escape(p).replace(/\n/g, '<br>')}</p>`).join('\n')}\n</div>`)
@@ -296,7 +217,7 @@ if (chrome) {
   writeFileSync(htmlFile, cvHtml)
   const pdf = fileURLToPath(new URL('../../cv.pdf', import.meta.url))
   execFileSync(chrome, ['--headless', '--disable-gpu', '--no-sandbox', '--no-pdf-header-footer', '--virtual-time-budget=5000', `--print-to-pdf=${pdf}`, pathToFileURL(htmlFile).href], {stdio: 'ignore'})
-  console.log(`Built index.html with ${entries.length} entries, about/index.html, gallery/index.html and cv.pdf`)
+  console.log(`Built index.html with ${entries.length} entries, about/index.html and cv.pdf`)
 } else {
-  console.log(`Built index.html with ${entries.length} entries, about/index.html and gallery/index.html (no Chrome found, cv.pdf not updated)`)
+  console.log(`Built index.html with ${entries.length} entries and about/index.html (no Chrome found, cv.pdf not updated)`)
 }
