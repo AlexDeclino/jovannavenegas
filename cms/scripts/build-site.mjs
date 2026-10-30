@@ -133,8 +133,8 @@ function writePage(path, current, content) {
 
 writePage('index.html', 'Index', table)
 
-// The gallery stacks each entry's images under its year and title, one project per
-// block between dotted lines. Upcoming entries and entries without images are left
+// The gallery stacks each entry's images, one project per block between dotted
+// lines, with no text. Upcoming entries and entries without images are left
 // out (while PLACEHOLDER_DETAILS is on, entries without images show grey boxes).
 const galleryBlocks = entries
   .map((e, i) => {
@@ -142,8 +142,7 @@ const galleryBlocks = entries
     let images = imagesOf(e)
     if (PLACEHOLDER_DETAILS && !images.length && !paragraphsOf(e.description).length) images = placeholders(i)
     if (!images.length) return ''
-    const caption = [e.year, e.project, e.space, e.location].map((v) => `<span>${escape((v ?? '').trim())}</span>`).join('')
-    return `<section class="g"><div class="row">${caption}</div><div class="g-images">${images.join('')}</div></section>`
+    return `<section class="g" aria-label="${escape((e.project ?? '').trim()).replace(/"/g, '&quot;')}"><div class="g-images">${images.join('')}</div></section>`
   })
   .filter(Boolean)
 writePage('gallery/index.html', 'Gallery', `<div class="gallery">\n${galleryBlocks.join('\n')}\n</div>`)
