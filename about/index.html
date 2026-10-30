@@ -29,9 +29,8 @@ a:hover,a:focus,a:active{text-decoration:underline overline}
 .menu a{text-decoration:none}
 .menu a:hover{text-decoration:underline}
 .menu .current{font-weight:700}
-.year-group + .year-group{margin-top:1.4em}
-.year-group h2{padding-bottom:calc(var(--row) + 0.55em)}
-.e{display:block;padding:calc(var(--row) + 0.55em) 0;border-top:1px dotted var(--fg)}
+.e{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,4fr) minmax(0,2fr) minmax(0,1.6fr);column-gap:2em;padding:calc(var(--row) + 0.55em) 0;border-top:1px dotted var(--fg)}
+.e > span:first-child{white-space:nowrap}
 .e:last-child{border-bottom:1px dotted var(--fg)}
 a.e{color:inherit;text-decoration:none}
 @media (hover:hover){.e:hover{background:var(--hover);box-shadow:-0.35em 0 0 var(--hover),0.35em 0 0 var(--hover)}}
@@ -41,8 +40,14 @@ a.e{color:inherit;text-decoration:none}
 .about p + p{margin-top:1em}
 @media (max-width:619px){
   .menufield{min-height:0;margin-bottom:2em}
+  .e{grid-template-columns:minmax(0,1fr) auto}
+  .e > span{grid-column:1}
+  .e > span:first-child{grid-column:2;grid-row:1;text-align:right}
+  .e > span:nth-child(2){grid-row:1}
+  .e > span:nth-child(n+3){opacity:0.55}
+  .e > span:empty{display:none}
 }
-@media print{.e{break-inside:avoid}.year-group h2{break-after:avoid}}
+@media print{.e{break-inside:avoid}}
 </style>
 </head>
 <body>

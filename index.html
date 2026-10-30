@@ -29,9 +29,8 @@ a:hover,a:focus,a:active{text-decoration:underline overline}
 .menu a{text-decoration:none}
 .menu a:hover{text-decoration:underline}
 .menu .current{font-weight:700}
-.year-group + .year-group{margin-top:1.4em}
-.year-group h2{padding-bottom:calc(var(--row) + 0.55em)}
-.e{display:block;padding:calc(var(--row) + 0.55em) 0;border-top:1px dotted var(--fg)}
+.e{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,4fr) minmax(0,2fr) minmax(0,1.6fr);column-gap:2em;padding:calc(var(--row) + 0.55em) 0;border-top:1px dotted var(--fg)}
+.e > span:first-child{white-space:nowrap}
 .e:last-child{border-bottom:1px dotted var(--fg)}
 a.e{color:inherit;text-decoration:none}
 @media (hover:hover){.e:hover{background:var(--hover);box-shadow:-0.35em 0 0 var(--hover),0.35em 0 0 var(--hover)}}
@@ -41,8 +40,14 @@ a.e{color:inherit;text-decoration:none}
 .about p + p{margin-top:1em}
 @media (max-width:619px){
   .menufield{min-height:0;margin-bottom:2em}
+  .e{grid-template-columns:minmax(0,1fr) auto}
+  .e > span{grid-column:1}
+  .e > span:first-child{grid-column:2;grid-row:1;text-align:right}
+  .e > span:nth-child(2){grid-row:1}
+  .e > span:nth-child(n+3){opacity:0.55}
+  .e > span:empty{display:none}
 }
-@media print{.e{break-inside:avoid}.year-group h2{break-after:avoid}}
+@media print{.e{break-inside:avoid}}
 </style>
 </head>
 <body>
@@ -53,186 +58,98 @@ a.e{color:inherit;text-decoration:none}
 <a class="about-link" href="/about/">About</a>
 </div>
 
-<section class="year-group">
-<h2>2027</h2>
-<div class="list" role="list" aria-label="2027">
-<div class="e" role="listitem">Berenice Olmedo: Epithumia</div>
-<div class="e" role="listitem">The KTX Biennial (Inaugural Edition)</div>
-<div class="e upcoming" role="listitem"><span class="bar">Upcoming</span></div>
+<div class="list" role="list" aria-label="CV">
+<div class="e" role="listitem"><span>2027</span><span>Berenice Olmedo: Epithumia</span><span>SculptureCenter</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2027</span><span>The KTX Biennial (Inaugural Edition)</span><span></span><span>Dallas, TX</span></div>
+<div class="e upcoming" role="listitem"><span>2027</span><span><span class="bar">Upcoming</span></span><span></span><span></span></div>
+<a class="e" role="listitem" href="https://www.sculpture-center.org/exhibitions/14655/pat-oleszko-fool-disclosure" target="_blank" rel="noopener"><span>2026</span><span>Pat Oleszko: Fool Disclosure (Touring to Museum Cobra, Amstelveen, fall 2026; Centro Pecci, Prato, Spring 2027)</span><span>SculptureCenter</span><span>New York, NY</span></a>
+<div class="e" role="listitem"><span>2026</span><span>Akinsanya Kambon: Soul Sessions</span><span>SculptureCenter</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2026</span><span>Cevdet Erek: Americas</span><span>SculptureCenter</span><span>New York, NY</span></div>
+<a class="e" role="listitem" href="https://www.thearmoryshow.com/platform-2026" target="_blank" rel="noopener"><span>2026</span><span>Platform (focused on the Caribbean)</span><span>The Armory Show</span><span>New York, NY</span></a>
+<div class="e" role="listitem"><span>2026</span><span>NYSCA/NYFA Artist Fellowship in Craft/Sculpture</span><span>New York Foundation for the Arts</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2026</span><span>Travesías: Caer en Tierra Amfibia Residency</span><span>Terremoto</span><span>Mompox, Colombia</span></div>
+<div class="e" role="listitem"><span>2026</span><span>Grants</span><span>Fundación Ama Amoedo</span><span>Uruguay and Argentina</span></div>
+<div class="e upcoming" role="listitem"><span>2026</span><span><span class="bar">Upcoming</span></span><span></span><span></span></div>
+<a class="e" role="listitem" href="https://kadist.org/program/kadist-x-pac-seed-fund/" target="_blank" rel="noopener"><span>2026</span><span>Seed Fund</span><span>Patronato de Arte Contemporáneo and Kadist</span><span>Mexico City and San Francisco</span></a>
+<div class="e" role="listitem"><span>2026</span><span>Believing in Art, with Liberty Adrian, Anna Roberta Goetz, Robert Leckie</span><span>Material Art Fair x Salón ACME</span><span>Mexico City, Mexico</span></div>
+<a class="e" role="listitem" href="https://www.ppowgallery.com/news/conversation-with-yu-ji-jovanna-venegas" target="_blank" rel="noopener"><span>2026</span><span>Origin of the Tiger, with Yu Ji</span><span>P·P·O·W</span><span>New York, NY</span></a>
+<a class="e" role="listitem" href="https://whitney.org/events/pat-oleszko" target="_blank" rel="noopener"><span>2026</span><span>Reel Life Performantz, with Pat Oleszko and Drew Sawyer</span><span>Whitney Museum of American Art</span><span>New York, NY</span></a>
+<a class="e" role="listitem" href="https://www.sculpture-center.org/shop/10345827467362/fool-disclosure" target="_blank" rel="noopener"><span>2026</span><span>Pat Oleszko: Fool Disclosure, Exhibition Catalogue</span><span>SculptureCenter</span><span>New York, NY</span></a>
+<a class="e" role="listitem" href="https://www.thearmoryshow.com/programs/curatorial-leadership-summit-2026" target="_blank" rel="noopener"><span>2026</span><span>Curatorial Leadership Summit: Institutional and Exhibitionary Scales</span><span>The Armory Show</span><span>New York, NY</span></a>
+<div class="e" role="listitem"><span>2026</span><span>Armory Show Live: Passages and Thresholds, with Jesús Hilario Reyes, Zenobia Lee, Gaëlle Choisne</span><span>The Armory Show</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2026</span><span>Guadalupe Rosales: East of the River Book Launch</span><span>Rizzoli Bookstore</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2025</span><span>Luana Vitra: Amulets</span><span>SculptureCenter</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2025</span><span>to ignite our skin</span><span>SculptureCenter</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2025</span><span>In Practice: Kevin Hernández Rosa</span><span>SculptureCenter</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2025</span><span>In Practice: Coco Klockner</span><span>SculptureCenter</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2025</span><span>Artist Residency</span><span>Fire Island Art Residency</span><span>Fire Island, NY</span></div>
+<div class="e" role="listitem"><span>2025</span><span>Artist Residency</span><span>Loghaven</span><span>Knoxville, TN</span></div>
+<div class="e" role="listitem"><span>2025</span><span>Core Residency Program</span><span>Glassell School of Art, Museum of Fine Arts, Houston</span><span>Houston, TX</span></div>
+<div class="e" role="listitem"><span>2025</span><span>Artist Critiques</span><span>Charlotte Street Foundation</span><span>Kansas City, MO</span></div>
+<div class="e" role="listitem"><span>2025</span><span>Luana Vitra: Amulets, Exhibition Catalogue</span><span>SculptureCenter</span><span>New York, NY</span></div>
+<a class="e" role="listitem" href="https://www.youtube.com/watch?v=FrwulMWpARQ" target="_blank" rel="noopener"><span>2025</span><span>Curators Professional Development Workshop, with Bernardo Mosqueira, Susanna Temkin, Robin Farrell</span><span>School of Visual Arts</span><span>New York, NY</span></a>
+<div class="e" role="listitem"><span>2025</span><span>Duffy Speaker Series</span><span>Wayne State University</span><span>Detroit, MI</span></div>
+<div class="e" role="listitem"><span>2025</span><span>Master of Arts Student Organization</span><span>Hunter College</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2025</span><span>Luana Vitra Book Launch, with Denise Ferreira da Silva</span><span>SculptureCenter</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2025</span><span>Rafael Domenech Book Launch</span><span>SculptureCenter</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2025</span><span>to ignite our skin Artist Talk</span><span>SculptureCenter</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2024–PRESENT</span><span>Curator</span><span>SculptureCenter</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2024</span><span>ASMA: Ideal Space for Music</span><span>SculptureCenter</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2024</span><span>Open Process: Alexa West</span><span>SculptureCenter</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2024</span><span>Awards</span><span>National Academy of Design</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2024</span><span>Small World Cinema, with Jen Liu and Brian Kuan Wood</span><span>SculptureCenter</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2024</span><span>Who Benefits from Diversity: Institutional Equality Today, with Deja Belardo</span><span>MECA Art Fair</span><span>Santo Domingo, Dominican Republic</span></div>
+<div class="e" role="listitem"><span>2024</span><span>Mexico City: Dialogues Across Fashion, Art and Design with Victor Barragan, Karla Kaplun, and Carla Fernández</span><span>Talking Galleries</span><span></span></div>
+<div class="e" role="listitem"><span>2024</span><span>Sitting on Chrome, Conversation with the Artists</span><span>FOG Art Fair</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2024</span><span>Diáspora, ¿Qué? localidad, internacionalidad, diásporas, tokenismos y exotismos</span><span>ARTBO</span><span>Bogotá, Colombia</span></div>
+<a class="e" role="listitem" href="https://www.ursinus.edu/live/news/8724-picturing-the-border-speaker-series-comes-to-the" target="_blank" rel="noopener"><span>2024</span><span>Picturing the Border talk for Enrique Bostelmann Exhibition</span><span>Berman Museum</span><span>Philadelphia, PA</span></a>
+<div class="e" role="listitem"><span>2023</span><span>Sitting on Chrome: Mario Ayala, Rafa Esparza, Guadalupe Rosales</span><span>SFMOMA</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2023</span><span>New Work: Fernando Palma Rodríguez</span><span>SFMOMA</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2023</span><span>Juried Competition</span><span>Masur Museum of Art</span><span>Monroe, LA</span></div>
+<div class="e" role="listitem"><span>2022</span><span>SECA Art Award: Binta Ayofemi, Maria A. Guzman Capron, Cathy Lu, Marcel Pardo Ariza, Gregory Rick</span><span>SFMOMA</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2022</span><span>Shifting the Silence</span><span>SFMOMA</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2022</span><span>San Diego Art Prize</span><span></span><span>San Diego, CA</span></div>
+<div class="e" role="listitem"><span>2022</span><span>Art &amp; Experiences, MA in Curatorial Practice</span><span>California College of the Arts</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2022</span><span>A Conversation with Liz Hernández</span><span>SFMOMA</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2022*</span><span>Patchwork Landscapes: Relational Networks at the U.S./Mexico Border, Whitney Biennial 2022 Catalogue</span><span>Whitney Museum of American Art</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2022*</span><span>SECA Art Award, Exhibition Catalogue</span><span>SFMOMA</span><span>San Francisco, CA</span></div>
+<a class="e" role="listitem" href="https://www.sfmoma.org/event/shifting-the-silence-artist-panel/" target="_blank" rel="noopener"><span>2022</span><span>Shifting the Silence Artist Panel, with Tania Pérez Córdova, Ayesha Sultana, Haegue Yang</span><span>SFMOMA</span><span>San Francisco, CA</span></a>
+<div class="e" role="listitem"><span>2021</span><span>New Work: Wu Tsang Presents Moved by the Motion</span><span>SFMOMA</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2021</span><span>Bay Area Walls: Liz Hernández</span><span>SFMOMA</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2021</span><span>The Harvest: Andrew Roberts and Mauricio Muñoz</span><span>Delaplane</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2021</span><span>Tramite 005, Section: Jalisco</span><span>Buró de Coleccionistas</span><span>Querétaro, Mexico</span></div>
+<div class="e" role="listitem"><span>2021</span><span>Bay Area Walls: Emory Douglas</span><span>SFMOMA</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2021</span><span>New Work: Charles Gaines</span><span>SFMOMA</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2021</span><span>Whitney Biennial 2022, U.S./Mexico Border Region</span><span>Whitney Museum of American Art</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2021</span><span>Introductions 2021</span><span>Root Division</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2021</span><span>Bi-Annual Artist Portfolio Reviews</span><span>Institute of Contemporary Art San José</span><span>San José, CA</span></div>
+<div class="e" role="listitem"><span>2021</span><span>A Joy Unexpected</span><span>Root Division</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2021</span><span>Introductions, Exhibition Catalogue</span><span>Root Division</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2021</span><span>Mesa en Construcción: Ingrid Hernandez, Mónica Arreola, Guadalupe Vidal, Roxana Alvarado</span><span></span><span>Online</span></div>
+<div class="e" role="listitem"><span>2021</span><span>Un desafío en fragmentos: sobre tanta curva de rafa esparza, Para Morelio Exhibition Catalogue</span><span></span><span></span></div>
+<div class="e" role="listitem"><span>2020</span><span>Bay Area Walls: Twin Walls Mural Company</span><span>SFMOMA</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2020</span><span>Bay Area Walls: Marcel Pardo Ariza and Juan Carlos Rodriguez Rivera</span><span>SFMOMA</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2020-2022</span><span>Radio Rumorosa, 20 Spanish-language Interviews with Artists Across the Border</span><span>Nett Nett Radio</span><span></span></div>
+<div class="e" role="listitem"><span>2020</span><span>Catching Up! with Firelei Baez</span><span>SFMOMA</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2020</span><span>Critics’ Picks: Lydia Ourahmane</span><span>Artforum</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2019</span><span>SOFT POWER</span><span>SFMOMA</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2019</span><span>New Work: Rodney McMillian</span><span>SFMOMA</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2019</span><span>Jason Moran SOFT POWER Exhibition Catalogue</span><span>SFMOMA</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2018</span><span>New Work: Etel Adnan</span><span>SFMOMA</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2017–2023</span><span>Curatorial Assistant and later Associate Curator of Contemporary Art</span><span>SFMOMA</span><span>San Francisco, CA</span></div>
+<div class="e" role="listitem"><span>2017</span><span>Program Intern</span><span>e-flux</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2017</span><span>MA, Curatorial Practice (Mentor: Maria Lind)</span><span>School of Visual Arts</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2016–2017</span><span>Curatorial Intern</span><span>Colección Patricia Phelps de Cisneros</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2016</span><span>Curatorial Fellow to Artistic Director Maria Lind</span><span>Gwangju Biennale</span><span>Gwangju, South Korea</span></div>
+<div class="e" role="listitem"><span>2016</span><span>Travel Grant for the Gwangju Biennale 2016</span><span>Alumnos47</span><span>Mexico City, Mexico</span></div>
+<div class="e" role="listitem"><span>2015</span><span>Curatorial Intern to Elisabeth Sussman</span><span>Whitney Museum of American Art</span><span>New York, NY</span></div>
+<div class="e" role="listitem"><span>2015–2017</span><span>Grant for MA and PhD Studies</span><span>Jumex Foundation</span><span>Mexico City, Mexico</span></div>
+<div class="e" role="listitem"><span>2014</span><span>Gallery Assistant</span><span>Gaga Fine Arts</span><span>Mexico City, Mexico</span></div>
+<div class="e" role="listitem"><span>2013</span><span>Curatorial Intern to Alejandra Labastida</span><span>Museo Universitario Arte Contemporáneo (MUAC)</span><span>Mexico City, Mexico</span></div>
+<div class="e" role="listitem"><span>2010</span><span>BA, Art History</span><span>University of California, Los Angeles</span><span>Los Angeles, CA</span></div>
+<div class="e" role="listitem"><span>2009</span><span>Multicultural Scholarship Test</span><span>Getty Foundation</span><span>Los Angeles, CA</span></div>
+<div class="e" role="listitem"><span>2008–2010</span><span>Public Programs Department</span><span>Hammer Museum</span><span>Los Angeles, CA</span></div>
 </div>
-</section>
-<section class="year-group">
-<h2>2026</h2>
-<div class="list" role="list" aria-label="2026">
-<a class="e" role="listitem" href="https://www.sculpture-center.org/exhibitions/14655/pat-oleszko-fool-disclosure" target="_blank" rel="noopener">Pat Oleszko: Fool Disclosure (Touring to Museum Cobra, Amstelveen, fall 2026; Centro Pecci, Prato, Spring 2027)</a>
-<div class="e" role="listitem">Akinsanya Kambon: Soul Sessions</div>
-<div class="e" role="listitem">Cevdet Erek: Americas</div>
-<a class="e" role="listitem" href="https://www.thearmoryshow.com/platform-2026" target="_blank" rel="noopener">Platform (focused on the Caribbean)</a>
-<div class="e" role="listitem">NYSCA/NYFA Artist Fellowship in Craft/Sculpture</div>
-<div class="e" role="listitem">Travesías: Caer en Tierra Amfibia Residency</div>
-<div class="e" role="listitem">Grants</div>
-<div class="e upcoming" role="listitem"><span class="bar">Upcoming</span></div>
-<a class="e" role="listitem" href="https://kadist.org/program/kadist-x-pac-seed-fund/" target="_blank" rel="noopener">Seed Fund</a>
-<div class="e" role="listitem">Believing in Art, with Liberty Adrian, Anna Roberta Goetz, Robert Leckie</div>
-<a class="e" role="listitem" href="https://www.ppowgallery.com/news/conversation-with-yu-ji-jovanna-venegas" target="_blank" rel="noopener">Origin of the Tiger, with Yu Ji</a>
-<a class="e" role="listitem" href="https://whitney.org/events/pat-oleszko" target="_blank" rel="noopener">Reel Life Performantz, with Pat Oleszko and Drew Sawyer</a>
-<a class="e" role="listitem" href="https://www.sculpture-center.org/shop/10345827467362/fool-disclosure" target="_blank" rel="noopener">Pat Oleszko: Fool Disclosure, Exhibition Catalogue</a>
-<a class="e" role="listitem" href="https://www.thearmoryshow.com/programs/curatorial-leadership-summit-2026" target="_blank" rel="noopener">Curatorial Leadership Summit: Institutional and Exhibitionary Scales</a>
-<div class="e" role="listitem">Armory Show Live: Passages and Thresholds, with Jesús Hilario Reyes, Zenobia Lee, Gaëlle Choisne</div>
-<div class="e" role="listitem">Guadalupe Rosales: East of the River Book Launch</div>
-</div>
-</section>
-<section class="year-group">
-<h2>2025</h2>
-<div class="list" role="list" aria-label="2025">
-<div class="e" role="listitem">Luana Vitra: Amulets</div>
-<div class="e" role="listitem">to ignite our skin</div>
-<div class="e" role="listitem">In Practice: Kevin Hernández Rosa</div>
-<div class="e" role="listitem">In Practice: Coco Klockner</div>
-<div class="e" role="listitem">Artist Residency</div>
-<div class="e" role="listitem">Artist Residency</div>
-<div class="e" role="listitem">Core Residency Program</div>
-<div class="e" role="listitem">Artist Critiques</div>
-<div class="e" role="listitem">Luana Vitra: Amulets, Exhibition Catalogue</div>
-<a class="e" role="listitem" href="https://www.youtube.com/watch?v=FrwulMWpARQ" target="_blank" rel="noopener">Curators Professional Development Workshop, with Bernardo Mosqueira, Susanna Temkin, Robin Farrell</a>
-<div class="e" role="listitem">Duffy Speaker Series</div>
-<div class="e" role="listitem">Master of Arts Student Organization</div>
-<div class="e" role="listitem">Luana Vitra Book Launch, with Denise Ferreira da Silva</div>
-<div class="e" role="listitem">Rafael Domenech Book Launch</div>
-<div class="e" role="listitem">to ignite our skin Artist Talk</div>
-</div>
-</section>
-<section class="year-group">
-<h2>2024</h2>
-<div class="list" role="list" aria-label="2024">
-<div class="e" role="listitem">Curator</div>
-<div class="e" role="listitem">ASMA: Ideal Space for Music</div>
-<div class="e" role="listitem">Open Process: Alexa West</div>
-<div class="e" role="listitem">Awards</div>
-<div class="e" role="listitem">Small World Cinema, with Jen Liu and Brian Kuan Wood</div>
-<div class="e" role="listitem">Who Benefits from Diversity: Institutional Equality Today, with Deja Belardo</div>
-<div class="e" role="listitem">Mexico City: Dialogues Across Fashion, Art and Design with Victor Barragan, Karla Kaplun, and Carla Fernández</div>
-<div class="e" role="listitem">Sitting on Chrome, Conversation with the Artists</div>
-<div class="e" role="listitem">Diáspora, ¿Qué? localidad, internacionalidad, diásporas, tokenismos y exotismos</div>
-<a class="e" role="listitem" href="https://www.ursinus.edu/live/news/8724-picturing-the-border-speaker-series-comes-to-the" target="_blank" rel="noopener">Picturing the Border talk for Enrique Bostelmann Exhibition</a>
-</div>
-</section>
-<section class="year-group">
-<h2>2023</h2>
-<div class="list" role="list" aria-label="2023">
-<div class="e" role="listitem">Sitting on Chrome: Mario Ayala, Rafa Esparza, Guadalupe Rosales</div>
-<div class="e" role="listitem">New Work: Fernando Palma Rodríguez</div>
-<div class="e" role="listitem">Juried Competition</div>
-</div>
-</section>
-<section class="year-group">
-<h2>2022</h2>
-<div class="list" role="list" aria-label="2022">
-<div class="e" role="listitem">SECA Art Award: Binta Ayofemi, Maria A. Guzman Capron, Cathy Lu, Marcel Pardo Ariza, Gregory Rick</div>
-<div class="e" role="listitem">Shifting the Silence</div>
-<div class="e" role="listitem">San Diego Art Prize</div>
-<div class="e" role="listitem">Art &amp; Experiences, MA in Curatorial Practice</div>
-<div class="e" role="listitem">A Conversation with Liz Hernández</div>
-<div class="e" role="listitem">Patchwork Landscapes: Relational Networks at the U.S./Mexico Border, Whitney Biennial 2022 Catalogue</div>
-<div class="e" role="listitem">SECA Art Award, Exhibition Catalogue</div>
-<a class="e" role="listitem" href="https://www.sfmoma.org/event/shifting-the-silence-artist-panel/" target="_blank" rel="noopener">Shifting the Silence Artist Panel, with Tania Pérez Córdova, Ayesha Sultana, Haegue Yang</a>
-</div>
-</section>
-<section class="year-group">
-<h2>2021</h2>
-<div class="list" role="list" aria-label="2021">
-<div class="e" role="listitem">New Work: Wu Tsang Presents Moved by the Motion</div>
-<div class="e" role="listitem">Bay Area Walls: Liz Hernández</div>
-<div class="e" role="listitem">The Harvest: Andrew Roberts and Mauricio Muñoz</div>
-<div class="e" role="listitem">Tramite 005, Section: Jalisco</div>
-<div class="e" role="listitem">Bay Area Walls: Emory Douglas</div>
-<div class="e" role="listitem">New Work: Charles Gaines</div>
-<div class="e" role="listitem">Whitney Biennial 2022, U.S./Mexico Border Region</div>
-<div class="e" role="listitem">Introductions 2021</div>
-<div class="e" role="listitem">Bi-Annual Artist Portfolio Reviews</div>
-<div class="e" role="listitem">A Joy Unexpected</div>
-<div class="e" role="listitem">Introductions, Exhibition Catalogue</div>
-<div class="e" role="listitem">Mesa en Construcción: Ingrid Hernandez, Mónica Arreola, Guadalupe Vidal, Roxana Alvarado</div>
-<div class="e" role="listitem">Un desafío en fragmentos: sobre tanta curva de rafa esparza, Para Morelio Exhibition Catalogue</div>
-</div>
-</section>
-<section class="year-group">
-<h2>2020</h2>
-<div class="list" role="list" aria-label="2020">
-<div class="e" role="listitem">Bay Area Walls: Twin Walls Mural Company</div>
-<div class="e" role="listitem">Bay Area Walls: Marcel Pardo Ariza and Juan Carlos Rodriguez Rivera</div>
-<div class="e" role="listitem">Radio Rumorosa, 20 Spanish-language Interviews with Artists Across the Border</div>
-<div class="e" role="listitem">Catching Up! with Firelei Baez</div>
-<div class="e" role="listitem">Critics’ Picks: Lydia Ourahmane</div>
-</div>
-</section>
-<section class="year-group">
-<h2>2019</h2>
-<div class="list" role="list" aria-label="2019">
-<div class="e" role="listitem">SOFT POWER</div>
-<div class="e" role="listitem">New Work: Rodney McMillian</div>
-<div class="e" role="listitem">Jason Moran SOFT POWER Exhibition Catalogue</div>
-</div>
-</section>
-<section class="year-group">
-<h2>2018</h2>
-<div class="list" role="list" aria-label="2018">
-<div class="e" role="listitem">New Work: Etel Adnan</div>
-</div>
-</section>
-<section class="year-group">
-<h2>2017</h2>
-<div class="list" role="list" aria-label="2017">
-<div class="e" role="listitem">Curatorial Assistant and later Associate Curator of Contemporary Art</div>
-<div class="e" role="listitem">Program Intern</div>
-<div class="e" role="listitem">MA, Curatorial Practice (Mentor: Maria Lind)</div>
-</div>
-</section>
-<section class="year-group">
-<h2>2016</h2>
-<div class="list" role="list" aria-label="2016">
-<div class="e" role="listitem">Curatorial Intern</div>
-<div class="e" role="listitem">Curatorial Fellow to Artistic Director Maria Lind</div>
-<div class="e" role="listitem">Travel Grant for the Gwangju Biennale 2016</div>
-</div>
-</section>
-<section class="year-group">
-<h2>2015</h2>
-<div class="list" role="list" aria-label="2015">
-<div class="e" role="listitem">Curatorial Intern to Elisabeth Sussman</div>
-<div class="e" role="listitem">Grant for MA and PhD Studies</div>
-</div>
-</section>
-<section class="year-group">
-<h2>2014</h2>
-<div class="list" role="list" aria-label="2014">
-<div class="e" role="listitem">Gallery Assistant</div>
-</div>
-</section>
-<section class="year-group">
-<h2>2013</h2>
-<div class="list" role="list" aria-label="2013">
-<div class="e" role="listitem">Curatorial Intern to Alejandra Labastida</div>
-</div>
-</section>
-<section class="year-group">
-<h2>2010</h2>
-<div class="list" role="list" aria-label="2010">
-<div class="e" role="listitem">BA, Art History</div>
-</div>
-</section>
-<section class="year-group">
-<h2>2009</h2>
-<div class="list" role="list" aria-label="2009">
-<div class="e" role="listitem">Multicultural Scholarship Test</div>
-</div>
-</section>
-<section class="year-group">
-<h2>2008</h2>
-<div class="list" role="list" aria-label="2008">
-<div class="e" role="listitem">Public Programs Department</div>
-</div>
-</section>
 
 <footer class="bottom">
 <ul class="menu">
