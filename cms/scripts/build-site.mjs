@@ -108,10 +108,8 @@ const listRow = (e, i) => {
 }
 const table = [`<div class="list" role="list" aria-label="CV">`, ...entries.map(listRow), `</div>`].join('\n')
 
-const MENU = [
-  {title: 'About', href: '/about/'},
-  {title: 'Index', href: '/'},
-]
+// Footer links. The name in the header links back to the index.
+const MENU = [{title: 'About', href: '/about/'}]
 // Settings from Sanity become CSS variables (and a Google Fonts link for web fonts).
 const settings = {...DEFAULT_SETTINGS, ...Object.fromEntries(Object.entries(docs.find((d) => d._id === 'settings') ?? {}).filter(([, v]) => v != null))}
 const font = FONTS[settings.font] ?? FONTS[DEFAULT_SETTINGS.font]
