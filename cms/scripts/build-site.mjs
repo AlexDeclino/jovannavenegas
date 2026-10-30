@@ -65,15 +65,15 @@ const LOREM = [
   'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
 ]
 // Sanity image refs look like image-<id>-<width>x<height>-<format>.
-function imageTag(image, fallbackAlt) {
+function imageTag(image, fallbackAlt, sizes = '(max-width: 619px) 100vw, 33vw') {
   const match = /^image-([a-f0-9]+)-(\d+)x(\d+)-(\w+)$/.exec(image?.asset?._ref ?? '')
   if (!match) return ''
   const [, id, w, h, format] = match
   const src = `https://cdn.sanity.io/images/${PROJECT_ID}/${DATASET}/${id}-${w}x${h}.${format}`
   const alt = escape((image.alt ?? fallbackAlt ?? '').trim()).replace(/"/g, '&quot;')
-  return `<img src="${src}?w=1200&amp;auto=format" srcset="${src}?w=600&amp;auto=format 600w, ${src}?w=1200&amp;auto=format 1200w" sizes="(max-width: 619px) 100vw, 33vw" width="${w}" height="${h}" alt="${alt}" loading="lazy">`
+  return `<img src="${src}?w=1200&amp;auto=format" srcset="${src}?w=600&amp;auto=format 600w, ${src}?w=1200&amp;auto=format 1200w, ${src}?w=2000&amp;auto=format 2000w" sizes="${sizes}" width="${w}" height="${h}" alt="${alt}" loading="lazy">`
 }
-const imagesOf = (e) => (e.images ?? []).slice(0, 3).map((img) => imageTag(img, e.project)).filter(Boolean)
+const imagesOf = (e, sizes) => (e.images ?? []).slice(0, 3).map((img) => imageTag(img, e.project, sizes)).filter(Boolean)
 const placeholders = (i) => Array.from({length: (i % 3) + 1}, () => `<div class="ph" role="img" aria-label="Image placeholder"></div>`)
 const paragraphsOf = (text) => (text ?? '').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean).map((p) => escape(p).replace(/\n/g, '<br>'))
 const rowCells = (cells) => cells.map((c) => `<span>${c}</span>`).join('')
@@ -133,12 +133,13 @@ function writePage(path, current, content) {
 
 writePage('index.html', 'Index', table)
 
-// The gallery stacks each entry's images, one project per block, with no text or lines. Upcoming entries and entries without images are left
+// The gallery stacks each entry's images at full width, one project per block, with
+// no text or lines. Upcoming entries and entries without images are left
 // out (while PLACEHOLDER_DETAILS is on, entries without images show grey boxes).
 const galleryBlocks = entries
   .map((e, i) => {
     if (e.upcoming) return ''
-    let images = imagesOf(e)
+    let images = imagesOf(e, '100vw')
     if (PLACEHOLDER_DETAILS && !images.length && !paragraphsOf(e.description).length) images = placeholders(i)
     if (!images.length) return ''
     return `<section class="g" aria-label="${escape((e.project ?? '').trim()).replace(/"/g, '&quot;')}"><div class="g-images">${images.join('')}</div></section>`
