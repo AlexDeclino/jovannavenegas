@@ -11,7 +11,6 @@ import {fileURLToPath, pathToFileURL} from 'node:url'
 import {FONTS, DEFAULT_SETTINGS} from '../schemas/settings.js'
 import {PROJECT_ID, DATASET} from '../project.js'
 
-const HEADER = ['Year', 'Project', 'Category', 'Location', 'Institution', 'Role']
 
 async function loadDocs(file) {
   if (file) return readFileSync(file, 'utf8').trim().split('\n').map((line) => JSON.parse(line))
@@ -39,14 +38,6 @@ function compare(a, b) {
 const row = (role, cells) => `<div class="r${role === 'columnheader' ? ' hd' : ''}" role="row">${cells.map((c) => `<span role="${role}"${c === '—' ? ' class="empty"' : ''}>${c}</span>`).join('')}</div>`
 // Only http(s) links are used; anything else is ignored.
 const safeLink = (url) => (/^https?:\/\/\S+$/i.test((url ?? '').trim()) ? escape(url.trim()).replace(/"/g, '&quot;') : null)
-// On the site a linked entry is clickable as a whole row.
-const linkedRow = (cells, href) =>
-  `<a class="r" role="row" href="${href}" target="_blank" rel="noopener">${cells.map((c) => `<span role="cell"${c === '—' ? ' class="empty"' : ''}>${c}</span>`).join('')}</a>`
-const siteRow = (e) => {
-  const cells = [e.year, e.project, e.category, e.location, e.space, e.scope].map(cell)
-  const href = safeLink(e.link)
-  return href ? linkedRow(cells, href) : row('cell', cells)
-}
 // In the PDF only the project title links.
 const pdfRow = (e) => {
   const href = safeLink(e.link)
@@ -62,10 +53,20 @@ const upcomingRow = (e, bars = 5) =>
 const docs = await loadDocs(process.argv[2])
 const entries = docs.filter((e) => e._type === 'entry').sort(compare)
 
+// The site lists titles only, grouped by starting year (TBC last). The year shows on
+// the first entry of each group. A linked entry is clickable as a whole row; an
+// upcoming one shows a highlight bar instead of its title, and no link.
+const groupYear = (e) => (Number.isFinite(startYear(e.year)) ? String(startYear(e.year)) : 'TBC')
+const listRow = (e, yearLabel) => {
+  const title = e.upcoming ? `<span class="bar">Upcoming</span>` : escape((e.project ?? '').trim())
+  const inner = `<span class="year">${yearLabel}</span><span class="title">${title}</span>`
+  const href = !e.upcoming && safeLink(e.link)
+  const cls = `e${e.upcoming ? ' upcoming' : ''}`
+  return href ? `<a class="${cls}" role="listitem" href="${href}" target="_blank" rel="noopener">${inner}</a>` : `<div class="${cls}" role="listitem">${inner}</div>`
+}
 const table = [
-  `<div role="table" aria-label="CV">`,
-  row('columnheader', HEADER.map((h) => escape(h.toUpperCase()))),
-  ...entries.map((e) => (e.upcoming ? upcomingRow(e) : siteRow(e))),
+  `<div class="list" role="list" aria-label="CV">`,
+  ...entries.map((e, i) => listRow(e, i === 0 || groupYear(entries[i - 1]) !== groupYear(e) ? groupYear(e) : '')),
   `</div>`,
 ].join('\n')
 
