@@ -13,22 +13,17 @@
 
 body{margin:0;padding:0 1em;background:var(--bg);color:var(--fg);font-family:var(--font);font-size:var(--size);line-height:1.4}
 h1,h2,p,ul{margin:0;padding:0;font-size:1em;font-weight:400}
-a{color:var(--fg);text-decoration:underline}
-a:hover,a:focus,a:active{text-decoration:underline overline}
+/* Links show a dotted underline only on hover or keyboard focus. */
+a{color:var(--fg);text-decoration:none}
+a:hover,a:focus-visible{text-decoration:underline dotted;text-underline-offset:0.2em}
 .container{margin:1em auto}
 @media (min-width:320px){.container{max-width:600px}}
 @media (min-width:620px){.container{max-width:760px}}
 @media (min-width:961px){.container{max-width:1088px}}
 @media (min-width:1281px){.container{max-width:1700px}}
 .menufield{min-height:11em;display:flex;flex-direction:column;align-items:flex-start;text-transform:uppercase}
-.about-link{text-decoration:none}
-.about-link:hover{text-decoration:underline}
 .menufield .name{font-weight:700}
-.menufield .name a{text-decoration:none}
-.menufield .name a:hover{text-decoration:underline}
 .menu{list-style:none;display:flex;justify-content:center;gap:1.5em;margin-bottom:0.5em}
-.menu a{text-decoration:none}
-.menu a:hover{text-decoration:underline}
 .menu .current{font-weight:700}
 .e{border-top:1px dotted var(--fg)}
 .e:last-child{border-bottom:1px dotted var(--fg)}
