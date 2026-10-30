@@ -38,12 +38,14 @@ summary.row{cursor:pointer;list-style:none}
 summary.row::-webkit-details-marker{display:none}
 summary.row:focus-visible{outline:1px dotted var(--fg);outline-offset:2px}
 @media (hover:hover){summary.row:hover{background:var(--hover);box-shadow:-0.35em 0 0 var(--hover),0.35em 0 0 var(--hover)}}
+details.e[open]{background:var(--hover);box-shadow:-0.35em 0 0 var(--hover),0.35em 0 0 var(--hover)}
 .detail{overflow:hidden}
 .detail .inner{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,4fr) minmax(0,2fr) minmax(0,1.6fr);column-gap:2em;padding:0.5em 0 2em}
 .detail .text{grid-column:2;max-width:36em}
 .detail .text p + p{margin-top:1em}
 .detail .images{grid-column:3 / 5;display:flex;flex-direction:column;gap:0.6em}
 .detail .ph{aspect-ratio:4 / 3;background:var(--line)}
+.detail .images img{display:block;width:100%;height:auto}
 .bottom{margin-top:3em;padding-bottom:36px;text-align:center;text-transform:uppercase}
 .upcoming .bar{display:inline-block;min-width:12em;background:var(--hl);color:var(--hl-fg);font-size:0.8em;line-height:1.3;padding:0 0.4em;margin:0.25em 0;min-height:1.3em;text-transform:uppercase}
 .about{max-width:40em}

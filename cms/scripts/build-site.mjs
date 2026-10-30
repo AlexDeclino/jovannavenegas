@@ -54,26 +54,44 @@ const docs = await loadDocs(process.argv[2])
 const entries = docs.filter((e) => e._type === 'entry').sort(compare)
 
 // The site lists one row per entry: year, title, institution, location, between
-// dotted lines. Clicking a row slides open its details: text on the left, up to
-// three stacked images on the right, and the entry's link if it has one. For now
-// every entry shows placeholder text and images. An upcoming entry shows a
-// highlight bar instead of its title, hides its other fields and doesn't open.
+// dotted lines. Clicking a row slides open its details: the description on the left,
+// up to three stacked images on the right, and the entry's link if it has one.
+// While PLACEHOLDER_DETAILS is on, entries without a description or images show
+// lorem ipsum and grey boxes instead, so the layout can be judged. An upcoming entry
+// shows a highlight bar instead of its title, hides its other fields and doesn't open.
+const PLACEHOLDER_DETAILS = true
 const LOREM = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
   'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
 ]
+// Sanity image refs look like image-<id>-<width>x<height>-<format>.
+function imageTag(image, fallbackAlt) {
+  const match = /^image-([a-f0-9]+)-(\d+)x(\d+)-(\w+)$/.exec(image?.asset?._ref ?? '')
+  if (!match) return ''
+  const [, id, w, h, format] = match
+  const src = `https://cdn.sanity.io/images/${PROJECT_ID}/${DATASET}/${id}-${w}x${h}.${format}`
+  const alt = escape((image.alt ?? fallbackAlt ?? '').trim()).replace(/"/g, '&quot;')
+  return `<img src="${src}?w=1200&amp;auto=format" srcset="${src}?w=600&amp;auto=format 600w, ${src}?w=1200&amp;auto=format 1200w" sizes="(max-width: 619px) 100vw, 33vw" width="${w}" height="${h}" alt="${alt}" loading="lazy">`
+}
+const paragraphsOf = (text) => (text ?? '').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean).map((p) => escape(p).replace(/\n/g, '<br>'))
 const rowCells = (cells) => cells.map((c) => `<span>${c}</span>`).join('')
 const listRow = (e, i) => {
   if (e.upcoming) return `<div class="e upcoming" role="listitem"><div class="row">${rowCells([cell(e.year), `<span class="bar">Upcoming</span>`, '', ''])}</div></div>`
   const cells = [e.year, e.project, e.space, e.location].map((v) => escape((v ?? '').trim()))
   const href = safeLink(e.link)
-  const images = Array.from({length: (i % 3) + 1}, () => `<div class="ph" role="img" aria-label="Image placeholder"></div>`).join('')
+  let paragraphs = paragraphsOf(e.description)
+  let images = (e.images ?? []).slice(0, 3).map((img) => imageTag(img, e.project)).filter(Boolean)
+  if (PLACEHOLDER_DETAILS && !paragraphs.length && !images.length) {
+    paragraphs = LOREM
+    images = Array.from({length: (i % 3) + 1}, () => `<div class="ph" role="img" aria-label="Image placeholder"></div>`)
+  }
+  if (!paragraphs.length && !images.length && !href) return `<div class="e" role="listitem"><div class="row">${rowCells(cells)}</div></div>`
   return [
     `<details class="e" role="listitem">`,
     `<summary class="row">${rowCells(cells)}</summary>`,
     `<div class="detail"><div class="inner">`,
-    `<div class="text">${LOREM.map((p) => `<p>${p}</p>`).join('')}${href ? `<p><a href="${href}" target="_blank" rel="noopener">Link ↗</a></p>` : ''}</div>`,
-    `<div class="images">${images}</div>`,
+    `<div class="text">${paragraphs.map((p) => `<p>${p}</p>`).join('')}${href ? `<p><a href="${href}" target="_blank" rel="noopener">Link ↗</a></p>` : ''}</div>`,
+    `<div class="images">${images.join('')}</div>`,
     `</div></div>`,
     `</details>`,
   ].join('')

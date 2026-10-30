@@ -64,6 +64,22 @@ export const entry = {
       validation: (rule) => rule.uri({scheme: ['http', 'https']}),
     },
     {
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+      rows: 6,
+      description: 'Shown when the entry is opened on the site. Leave an empty line between paragraphs.',
+    },
+    {
+      name: 'images',
+      title: 'Images',
+      type: 'array',
+      description: 'Up to 3 images, shown stacked next to the description when the entry is opened.',
+      of: [{type: 'image', fields: [{name: 'alt', title: 'Alt text', type: 'string', description: 'Describes the image for screen readers.'}]}],
+      options: {layout: 'grid'},
+      validation: (rule) => rule.max(3),
+    },
+    {
       name: 'excludeFromPdf',
       title: 'Exclude from PDF',
       type: 'boolean',
