@@ -141,10 +141,10 @@ function writePage(path, current, content) {
 
 writePage('index.html', 'Index', table)
 
-// The gallery stacks each entry's images at full width, one project per block, with
-// no text or lines. Upcoming entries and entries without images are left out (while
+// The gallery shows every entry's images as tiles in one grid, project after project,
+// with no text or lines. Upcoming entries and entries without images are left out (while
 // PLACEHOLDER_DETAILS is on, they get placeholder photos and text). Clicking a
-// project's photos opens a caption bar at the bottom of the screen with its year,
+// project's photo opens a caption bar at the bottom of the screen with its year,
 // title, institution and location; "More" shows the description and link. The text
 // sits hidden in each block and the script below copies it into the bar.
 const galleryBlocks = entries
@@ -161,9 +161,10 @@ const galleryBlocks = entries
     const href = safeLink(e.link)
     const caption = rowCells([e.year, e.project, e.space, e.location].map((v) => escape((v ?? '').trim())))
     const more = `<div class="cap-text">${paragraphs.map((p) => `<p>${p}</p>`).join('')}${href ? `<p><a href="${href}" target="_blank" rel="noopener">Link ↗</a></p>` : ''}</div>`
+    const label = `Show details for ${title}`.replace(/"/g, '&quot;')
     return [
       `<section class="g">`,
-      `<button type="button" class="g-images" aria-label="Show details for ${title.replace(/"/g, '&quot;')}">${images.join('')}</button>`,
+      ...images.map((img) => `<button type="button" class="tile" aria-label="${label}">${img}</button>`),
       `<template class="g-caption">${caption}</template>`,
       `<template class="g-more">${more}</template>`,
       `</section>`,
@@ -178,7 +179,7 @@ const captionBar = `<div class="cap" aria-live="polite" hidden>
 </div>
 </div>
 <script>
-// Gallery caption bar: click a project's photos to show its caption, again to hide it.
+// Gallery caption bar: click a project's photo to show its caption, again to hide it.
 const bar = document.querySelector('.cap')
 const row = bar.querySelector('.cap-row')
 const more = bar.querySelector('.cap-more')
@@ -190,26 +191,27 @@ const setMore = (open) => {
   toggle.setAttribute('aria-expanded', String(open))
   document.body.style.paddingBottom = bar.offsetHeight + 'px'
 }
+const tilesOf = (section) => section.querySelectorAll('.tile')
 const hide = () => {
   bar.classList.remove('open')
-  current?.querySelector('.g-images').setAttribute('aria-expanded', 'false')
+  current?.classList.remove('active')
   current = null
   document.body.style.paddingBottom = ''
   setTimeout(() => { if (!current) bar.hidden = true }, 300)
 }
 const show = (section) => {
-  current?.querySelector('.g-images').setAttribute('aria-expanded', 'false')
+  current?.classList.remove('active')
   current = section
   row.innerHTML = section.querySelector('.g-caption').innerHTML
   more.innerHTML = section.querySelector('.g-more').innerHTML
   toggle.hidden = !more.textContent.trim()
-  section.querySelector('.g-images').setAttribute('aria-expanded', 'true')
+  section.classList.add('active')
   bar.hidden = false
   requestAnimationFrame(() => bar.classList.add('open'))
   setMore(false)
 }
 for (const section of document.querySelectorAll('.g')) {
-  section.querySelector('.g-images').addEventListener('click', () => (current === section ? hide() : show(section)))
+  for (const tile of tilesOf(section)) tile.addEventListener('click', () => (current === section ? hide() : show(section)))
 }
 toggle.addEventListener('click', () => setMore(more.hidden))
 bar.querySelector('.cap-close').addEventListener('click', hide)
