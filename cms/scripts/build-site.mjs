@@ -74,7 +74,15 @@ function imageTag(image, fallbackAlt, sizes = '(max-width: 619px) 100vw, 33vw') 
   return `<img src="${src}?w=1200&amp;auto=format" srcset="${src}?w=600&amp;auto=format 600w, ${src}?w=1200&amp;auto=format 1200w, ${src}?w=2000&amp;auto=format 2000w" sizes="${sizes}" width="${w}" height="${h}" alt="${alt}" loading="lazy">`
 }
 const imagesOf = (e, sizes) => (e.images ?? []).slice(0, 3).map((img) => imageTag(img, e.project, sizes)).filter(Boolean)
-const placeholders = (i) => Array.from({length: (i % 3) + 1}, () => `<div class="ph" role="img" aria-label="Image placeholder"></div>`)
+// Placeholder photos from picsum.photos, seeded by the entry id so each project keeps
+// the same pictures between builds. Shapes vary so stacks look realistic.
+const PLACEHOLDER_SHAPES = [[1600, 1200], [1200, 1500], [1600, 900], [1400, 1400]]
+const placeholders = (e, i) =>
+  Array.from({length: (i % 3) + 1}, (_, n) => {
+    const [w, h] = PLACEHOLDER_SHAPES[(i + n) % PLACEHOLDER_SHAPES.length]
+    const seed = encodeURIComponent(`${e._id}-${n}`)
+    return `<img src="https://picsum.photos/seed/${seed}/${w}/${h}" width="${w}" height="${h}" alt="Placeholder photo" loading="lazy">`
+  })
 const paragraphsOf = (text) => (text ?? '').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean).map((p) => escape(p).replace(/\n/g, '<br>'))
 const rowCells = (cells) => cells.map((c) => `<span>${c}</span>`).join('')
 const listRow = (e, i) => {
@@ -85,7 +93,7 @@ const listRow = (e, i) => {
   let images = imagesOf(e)
   if (PLACEHOLDER_DETAILS && !paragraphs.length && !images.length) {
     paragraphs = LOREM
-    images = placeholders(i)
+    images = placeholders(e, i)
   }
   if (!paragraphs.length && !images.length && !href) return `<div class="e" role="listitem"><div class="row">${rowCells(cells)}</div></div>`
   return [
@@ -140,7 +148,7 @@ const galleryBlocks = entries
   .map((e, i) => {
     if (e.upcoming) return ''
     let images = imagesOf(e, '100vw')
-    if (PLACEHOLDER_DETAILS && !images.length && !paragraphsOf(e.description).length) images = placeholders(i)
+    if (PLACEHOLDER_DETAILS && !images.length && !paragraphsOf(e.description).length) images = placeholders(e, i)
     if (!images.length) return ''
     return `<section class="g" aria-label="${escape((e.project ?? '').trim()).replace(/"/g, '&quot;')}"><div class="g-images">${images.join('')}</div></section>`
   })
