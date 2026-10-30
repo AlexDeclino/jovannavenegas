@@ -23,8 +23,7 @@ a:hover,a:focus-visible{text-decoration:underline dotted;text-underline-offset:0
 @media (min-width:1281px){.container{max-width:1700px}}
 .menufield{min-height:11em;display:flex;flex-direction:column;align-items:flex-start;text-transform:uppercase}
 .menufield .name{font-weight:700}
-.menu{list-style:none;display:flex;justify-content:center;gap:1.5em;margin-bottom:0.5em}
-.menu .current{font-weight:700}
+.menu{list-style:none}
 .e{border-top:1px dotted var(--fg)}
 .e:last-child{border-bottom:1px dotted var(--fg)}
 .row{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,4fr) minmax(0,2fr) minmax(0,1.6fr);column-gap:2em;padding:calc(var(--row) + 0.55em) 0}
@@ -41,6 +40,12 @@ details.e[open]{background:var(--hover);box-shadow:-0.35em 0 0 var(--hover),0.35
 .detail .images{grid-column:3 / 5;display:flex;flex-direction:column;gap:0.6em}
 .detail .ph{aspect-ratio:4 / 3;background:var(--line)}
 .detail .images img{display:block;width:100%;height:auto}
+.g{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,4fr) minmax(0,2fr) minmax(0,1.6fr);column-gap:2em;padding-bottom:2em;border-top:1px dotted var(--fg)}
+.g:last-child{border-bottom:1px dotted var(--fg)}
+.g .row{grid-column:1 / -1}
+.g-images{grid-column:2 / 4;display:flex;flex-direction:column;gap:0.6em}
+.g-images img{display:block;width:100%;height:auto}
+.g-images .ph{aspect-ratio:4 / 3;background:var(--line)}
 .bottom{margin-top:3em;padding-bottom:36px;text-align:center;text-transform:uppercase}
 .upcoming .bar{display:inline-block;min-width:12em;background:var(--hl);color:var(--hl-fg);font-size:0.8em;line-height:1.3;padding:0 0.4em;margin:0.25em 0;min-height:1.3em;text-transform:uppercase}
 .about{max-width:40em}
@@ -55,6 +60,8 @@ details.e[open]{background:var(--hover);box-shadow:-0.35em 0 0 var(--hover),0.35
   .row > span:empty{display:none}
   .detail .inner{grid-template-columns:minmax(0,1fr);row-gap:1.5em}
   .detail .text,.detail .images{grid-column:1}
+  .g{grid-template-columns:minmax(0,1fr)}
+  .g-images{grid-column:1}
 }
 @media print{.e{break-inside:avoid}}
 </style>
@@ -64,15 +71,14 @@ details.e[open]{background:var(--hover);box-shadow:-0.35em 0 0 var(--hover),0.35
 
 <div class="menufield">
 <h1 class="name"><a href="/">Jovanna Venegas</a></h1>
-<!-- ABOUT_LINK -->
+<ul class="menu">
+<!-- MENU -->
+</ul>
 </div>
 
 <!-- CONTENT -->
 
 <footer class="bottom">
-<ul class="menu">
-<!-- MENU -->
-</ul>
 <p><!-- FOOTER --></p>
 </footer>
 

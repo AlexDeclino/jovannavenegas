@@ -73,6 +73,8 @@ function imageTag(image, fallbackAlt) {
   const alt = escape((image.alt ?? fallbackAlt ?? '').trim()).replace(/"/g, '&quot;')
   return `<img src="${src}?w=1200&amp;auto=format" srcset="${src}?w=600&amp;auto=format 600w, ${src}?w=1200&amp;auto=format 1200w" sizes="(max-width: 619px) 100vw, 33vw" width="${w}" height="${h}" alt="${alt}" loading="lazy">`
 }
+const imagesOf = (e) => (e.images ?? []).slice(0, 3).map((img) => imageTag(img, e.project)).filter(Boolean)
+const placeholders = (i) => Array.from({length: (i % 3) + 1}, () => `<div class="ph" role="img" aria-label="Image placeholder"></div>`)
 const paragraphsOf = (text) => (text ?? '').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean).map((p) => escape(p).replace(/\n/g, '<br>'))
 const rowCells = (cells) => cells.map((c) => `<span>${c}</span>`).join('')
 const listRow = (e, i) => {
@@ -80,10 +82,10 @@ const listRow = (e, i) => {
   const cells = [e.year, e.project, e.space, e.location].map((v) => escape((v ?? '').trim()))
   const href = safeLink(e.link)
   let paragraphs = paragraphsOf(e.description)
-  let images = (e.images ?? []).slice(0, 3).map((img) => imageTag(img, e.project)).filter(Boolean)
+  let images = imagesOf(e)
   if (PLACEHOLDER_DETAILS && !paragraphs.length && !images.length) {
     paragraphs = LOREM
-    images = Array.from({length: (i % 3) + 1}, () => `<div class="ph" role="img" aria-label="Image placeholder"></div>`)
+    images = placeholders(i)
   }
   if (!paragraphs.length && !images.length && !href) return `<div class="e" role="listitem"><div class="row">${rowCells(cells)}</div></div>`
   return [
@@ -100,8 +102,9 @@ const table = [`<div class="list" role="list" aria-label="CV">`, ...entries.map(
 
 // Gallery has no page yet.
 const MENU = [
+  {title: 'About', href: '/about/'},
   {title: 'Index', href: '/'},
-  {title: 'Gallery', href: '#gallery'},
+  {title: 'Gallery', href: '/gallery/'},
 ]
 // Settings from Sanity become CSS variables (and a Google Fonts link for web fonts).
 const settings = {...DEFAULT_SETTINGS, ...Object.fromEntries(Object.entries(docs.find((d) => d._id === 'settings') ?? {}).filter(([, v]) => v != null))}
@@ -122,13 +125,28 @@ const footer = [
   `<a href="/cv.pdf" download="Jovanna-Venegas-CV.pdf">Export CV</a>`,
 ].join(' - ')
 function writePage(path, current, content) {
-  const menu = MENU.map(({title, href}) => `<li><a${title === current ? ' class="current"' : ''} href="${href}">${title}</a></li>`)
+  const menu = MENU.map(({title, href}) => `<li><a href="${href}"${title === current ? ' aria-current="page"' : ''}>${title}</a></li>`)
   const file = new URL(`../../${path}`, import.meta.url)
   mkdirSync(new URL('./', file), {recursive: true})
-  writeFileSync(file, template.replace('<!-- MENU -->', menu.join('\n')).replace('<!-- ABOUT_LINK -->', `<a class="about-link${current === 'About' ? ' current' : ''}" href="/about/">About</a>`).replace('<!-- CONTENT -->', content).replace('<!-- FOOTER -->', footer))
+  writeFileSync(file, template.replace('<!-- MENU -->', menu.join('\n')).replace('<!-- CONTENT -->', content).replace('<!-- FOOTER -->', footer))
 }
 
 writePage('index.html', 'Index', table)
+
+// The gallery stacks each entry's images under its year and title, one project per
+// block between dotted lines. Upcoming entries and entries without images are left
+// out (while PLACEHOLDER_DETAILS is on, entries without images show grey boxes).
+const galleryBlocks = entries
+  .map((e, i) => {
+    if (e.upcoming) return ''
+    let images = imagesOf(e)
+    if (PLACEHOLDER_DETAILS && !images.length && !paragraphsOf(e.description).length) images = placeholders(i)
+    if (!images.length) return ''
+    const caption = [e.year, e.project, e.space, e.location].map((v) => `<span>${escape((v ?? '').trim())}</span>`).join('')
+    return `<section class="g"><div class="row">${caption}</div><div class="g-images">${images.join('')}</div></section>`
+  })
+  .filter(Boolean)
+writePage('gallery/index.html', 'Gallery', `<div class="gallery">\n${galleryBlocks.join('\n')}\n</div>`)
 const aboutText = docs.find((d) => d._id === 'about')?.text ?? ''
 const paragraphs = aboutText.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean)
 writePage('about/index.html', 'About', `<div class="about">\n${paragraphs.map((p) => `<p>${escape(p).replace(/\n/g, '<br>')}</p>`).join('\n')}\n</div>`)
@@ -207,7 +225,7 @@ if (chrome) {
   writeFileSync(htmlFile, cvHtml)
   const pdf = fileURLToPath(new URL('../../cv.pdf', import.meta.url))
   execFileSync(chrome, ['--headless', '--disable-gpu', '--no-sandbox', '--no-pdf-header-footer', '--virtual-time-budget=5000', `--print-to-pdf=${pdf}`, pathToFileURL(htmlFile).href], {stdio: 'ignore'})
-  console.log(`Built index.html with ${entries.length} entries, about/index.html and cv.pdf`)
+  console.log(`Built index.html with ${entries.length} entries, about/index.html, gallery/index.html and cv.pdf`)
 } else {
-  console.log(`Built index.html with ${entries.length} entries and about/index.html (no Chrome found, cv.pdf not updated)`)
+  console.log(`Built index.html with ${entries.length} entries, about/index.html and gallery/index.html (no Chrome found, cv.pdf not updated)`)
 }
