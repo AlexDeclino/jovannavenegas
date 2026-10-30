@@ -54,16 +54,29 @@ const docs = await loadDocs(process.argv[2])
 const entries = docs.filter((e) => e._type === 'entry').sort(compare)
 
 // The site lists one row per entry: year, title, institution, location, between
-// dotted lines. A linked entry is clickable as a whole row; an upcoming one shows a
-// highlight bar instead of its title, hides its other fields, and gets no link.
-const listRow = (e) => {
-  const cells = e.upcoming
-    ? [cell(e.year), `<span class="bar">Upcoming</span>`, '', '']
-    : [e.year, e.project, e.space, e.location].map((v) => escape((v ?? '').trim()))
-  const inner = cells.map((c) => `<span>${c}</span>`).join('')
-  const href = !e.upcoming && safeLink(e.link)
-  const cls = `e${e.upcoming ? ' upcoming' : ''}`
-  return href ? `<a class="${cls}" role="listitem" href="${href}" target="_blank" rel="noopener">${inner}</a>` : `<div class="${cls}" role="listitem">${inner}</div>`
+// dotted lines. Clicking a row slides open its details: text on the left, up to
+// three stacked images on the right, and the entry's link if it has one. For now
+// every entry shows placeholder text and images. An upcoming entry shows a
+// highlight bar instead of its title, hides its other fields and doesn't open.
+const LOREM = [
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+  'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+]
+const rowCells = (cells) => cells.map((c) => `<span>${c}</span>`).join('')
+const listRow = (e, i) => {
+  if (e.upcoming) return `<div class="e upcoming" role="listitem"><div class="row">${rowCells([cell(e.year), `<span class="bar">Upcoming</span>`, '', ''])}</div></div>`
+  const cells = [e.year, e.project, e.space, e.location].map((v) => escape((v ?? '').trim()))
+  const href = safeLink(e.link)
+  const images = Array.from({length: (i % 3) + 1}, () => `<div class="ph" role="img" aria-label="Image placeholder"></div>`).join('')
+  return [
+    `<details class="e" role="listitem">`,
+    `<summary class="row">${rowCells(cells)}</summary>`,
+    `<div class="detail"><div class="inner">`,
+    `<div class="text">${LOREM.map((p) => `<p>${p}</p>`).join('')}${href ? `<p><a href="${href}" target="_blank" rel="noopener">Link ↗</a></p>` : ''}</div>`,
+    `<div class="images">${images}</div>`,
+    `</div></div>`,
+    `</details>`,
+  ].join('')
 }
 const table = [`<div class="list" role="list" aria-label="CV">`, ...entries.map(listRow), `</div>`].join('\n')
 
