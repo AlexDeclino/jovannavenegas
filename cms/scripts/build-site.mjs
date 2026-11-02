@@ -118,7 +118,7 @@ const footer = [
   `<a href="/cv.pdf" download="Jovanna-Venegas-CV.pdf">Export CV</a>`,
 ].join(' - ')
 
-function writePage(path, current, content, head) {
+function writePage(path, current, content, head, tagline = '') {
   const menu = MENU.map(({title, href}) => `<li><a href="${href}"${title === current ? ' aria-current="page"' : ''}>${title}</a></li>`)
   const file = new URL(`../../${path}`, import.meta.url)
   mkdirSync(new URL('./', file), {recursive: true})
@@ -126,6 +126,7 @@ function writePage(path, current, content, head) {
     file,
     template
       .replace('<!-- HEAD -->', headFor({...head, path}))
+      .replace('<!-- TAGLINE -->', tagline ? `<p class="tagline">${escape(tagline)}</p>` : '')
       .replace('<!-- MENU -->', menu.join('\n'))
       .replace('<!-- CONTENT -->', content)
       .replace('<!-- FOOTER -->', footer),
@@ -136,7 +137,7 @@ writePage('index.html', 'Index', [`<div class="list" role="list" aria-label="CV"
   title: 'Jovanna Venegas',
   description: 'Jovanna Venegas is a curator currently working at SculptureCenter, New York.',
   jsonLd: person,
-})
+}, '(website under construction)')
 
 const aboutParagraphs = paragraphsOf(aboutText)
 writePage('about/index.html', 'About', `<div class="about">\n${aboutParagraphs.map((p) => `<p>${escape(p).replace(/\n/g, '<br>')}</p>`).join('\n')}\n</div>`, {
