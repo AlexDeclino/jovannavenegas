@@ -1,4 +1,3 @@
-// The About page text. There is only one, with the fixed id "about".
 export const about = {
   name: 'about',
   title: 'About',

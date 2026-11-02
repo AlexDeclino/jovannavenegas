@@ -1,7 +1,6 @@
 // Accepts 2027, 2016–2017, 2024–PRESENT, TBC, and a trailing * on any of them.
 const YEAR_PATTERN = /^(TBC|\d{4}(\s*[–-]\s*(\d{4}|PRESENT))?)\*?$/i
 
-// Fields follow the column order on the site.
 export const entry = {
   name: 'entry',
   title: 'Entry',

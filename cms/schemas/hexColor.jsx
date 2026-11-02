@@ -3,7 +3,6 @@ import {Box, Flex, TextInput} from '@sanity/ui'
 
 const HEX = /^#[0-9a-f]{6}$/i
 
-// A hex color as text, with the browser's own color picker beside it.
 function HexColorInput({value = '', onChange, elementProps}) {
   const update = (next) => onChange(next ? set(next) : unset())
   return (

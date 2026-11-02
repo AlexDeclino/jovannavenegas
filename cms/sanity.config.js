@@ -36,12 +36,10 @@ export default defineConfig({
   ],
   schema: {
     types: [entry, about, settings, hexColor],
-    // About and Settings exist once and can't be created again.
     templates: (prev) => prev.filter((t) => !SINGLETONS.includes(t.schemaType)),
   },
   document: {
-    // Put Delete right under Publish in the arrow menu of every entry. About and
-    // Settings can't be deleted or duplicated.
+    // Delete sits right under Publish for entries; About and Settings can't be removed.
     actions: (prev, {schemaType}) => {
       if (SINGLETONS.includes(schemaType)) return prev.filter(({action}) => !['delete', 'duplicate', 'unpublish'].includes(action))
       const del = prev.find(({action}) => action === 'delete')

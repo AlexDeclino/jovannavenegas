@@ -1,5 +1,4 @@
-// Site-wide look. There is only one, with the fixed id "settings".
-// FONTS maps each choice to its CSS stack and, for web fonts, the Google Fonts family.
+// `google` is the Google Fonts family to load, for fonts that aren't on every computer.
 export const FONTS = {
   helvetica: {title: 'Helvetica', stack: 'Helvetica,Arial,Verdana,sans-serif'},
   times: {title: 'Times', stack: '"Times New Roman",Times,serif'},
@@ -68,7 +67,7 @@ export const settings = {
       name: 'rowSpacing',
       title: 'Entries vertical spacing',
       type: 'number',
-      description: 'Extra space above and below each entry, in pixels. 0 matches jetset.nl.',
+      description: 'Extra space above and below each entry, in pixels. Default 0.',
       initialValue: DEFAULT_SETTINGS.rowSpacing,
       validation: (rule) => rule.min(0).max(40),
     },

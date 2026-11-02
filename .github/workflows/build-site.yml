@@ -1,6 +1,4 @@
-# Rebuilds index.html, about/index.html and cv.pdf from Sanity. Triggered by the Sanity "publish" webhook
-# (repository_dispatch), by changes to the template or build code, or by hand
-# from the Actions tab.
+# Rebuilds the site from Sanity on publish (webhook), on changes to the build code, or by hand.
 name: Build site from Sanity
 
 on:
