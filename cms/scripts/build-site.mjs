@@ -168,8 +168,8 @@ function writePage(path, current, content, head) {
 }
 
 writePage('index.html', 'Index', table, {
-  title: 'Jovanna Venegas — Curator',
-  description: 'Jovanna Venegas is Curator at SculptureCenter, New York. Exhibitions, juries, talks, publications and experience.',
+  title: 'Jovanna Venegas',
+  description: 'Jovanna Venegas is a curator currently working at SculptureCenter, New York.',
   jsonLd: person,
 })
 
