@@ -93,26 +93,29 @@ details.e[open] > summary.row{position:sticky;top:0;z-index:1;background:var(--h
 </div>
 <script>
 // Open and close entries with a slide. Without JavaScript, <details> still works.
+// The slide moves at a steady speed, so taller panels take longer.
+const PIXELS_PER_SECOND = 1500
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)')
 for (const item of document.querySelectorAll('details.e')) {
   const panel = item.querySelector('.detail')
   const slide = (from, to, done) => {
     if (reduceMotion.matches) return done()
     item.dataset.busy = '1'
-    panel.animate([{height: from}, {height: to}], {duration: 350, easing: 'ease'}).onfinish = () => {
+    const duration = Math.max(200, (Math.abs(to - from) / PIXELS_PER_SECOND) * 1000)
+    panel.animate([{height: from + 'px'}, {height: to + 'px'}], {duration, easing: 'ease'}).onfinish = () => {
       delete item.dataset.busy
       done()
     }
   }
   const open = () => {
     item.open = true
-    slide('0px', panel.offsetHeight + 'px', () => {})
+    slide(0, panel.offsetHeight, () => {})
   }
   const close = () => {
     // Keep the pinned row in place while the panel folds away.
     const top = item.getBoundingClientRect().top
     if (top < 0) window.scrollBy(0, top)
-    slide(panel.offsetHeight + 'px', '0px', () => (item.open = false))
+    slide(panel.offsetHeight, 0, () => (item.open = false))
   }
   item.querySelector('summary').addEventListener('click', (event) => {
     event.preventDefault()
