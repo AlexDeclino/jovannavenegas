@@ -33,8 +33,8 @@ a:hover,a:focus-visible{text-decoration:underline dotted;text-underline-offset:0
 
 .e{border-top:1px dotted var(--fg)}
 .e:last-child{border-bottom:1px dotted var(--fg)}
-.row{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,4fr) minmax(0,2fr) minmax(0,1.6fr);column-gap:2em;padding:calc(var(--row) + 0.55em) 0}
-.row > span:first-child{white-space:nowrap}
+.row{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,2fr) minmax(0,2fr) minmax(0,1.6fr) minmax(0,1.1fr);column-gap:2em;padding:calc(var(--row) + 0.55em) 0}
+.row > span:last-child{white-space:nowrap;text-align:right}
 summary.row{cursor:pointer;list-style:none}
 summary.row::-webkit-details-marker{display:none}
 summary.row:focus-visible{outline:1px dotted var(--fg);outline-offset:2px}
@@ -42,10 +42,10 @@ summary.row:focus-visible{outline:1px dotted var(--fg);outline-offset:2px}
 details.e[open]{background:var(--hover);box-shadow:-0.35em 0 0 var(--hover),0.35em 0 0 var(--hover)}
 details.e[open] > summary.row{position:sticky;top:0;z-index:1;background:var(--hover);box-shadow:-0.35em 0 0 var(--hover),0.35em 0 0 var(--hover)}
 .detail{overflow:hidden;cursor:pointer}
-.detail .inner{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,4fr) minmax(0,2fr) minmax(0,1.6fr);column-gap:2em;padding:0.5em 0 2em}
-.detail .text{grid-column:2;max-width:36em}
+.detail .inner{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,2fr) minmax(0,2fr) minmax(0,1.6fr) minmax(0,1.1fr);column-gap:2em;padding:0.5em 0 2em}
+.detail .text{grid-column:1 / 3;max-width:36em}
 .detail .text p + p{margin-top:1em}
-.detail .images{grid-column:3 / 5;display:flex;flex-direction:column;gap:0.6em}
+.detail .images{grid-column:3 / 6;display:flex;flex-direction:column;gap:0.6em}
 .detail .images img{display:block;width:100%;height:auto}
 .upcoming .bar{display:inline-block;min-width:12em;background:var(--hl);color:var(--hl-fg);font-size:0.8em;line-height:1.3;padding:0 0.4em;margin:0.25em 0;min-height:1.3em;text-transform:uppercase}
 
@@ -59,9 +59,9 @@ details.e[open] > summary.row{position:sticky;top:0;z-index:1;background:var(--h
   .site-header{min-height:0;margin-bottom:2em}
   .row{grid-template-columns:minmax(0,1fr) auto}
   .row > span{grid-column:1}
-  .row > span:first-child{grid-column:2;grid-row:1;text-align:right}
-  .row > span:nth-child(2){grid-row:1}
-  .row > span:nth-child(n+3){opacity:0.55}
+  .row > span:first-child{grid-row:1}
+  .row > span:last-child{grid-column:2;grid-row:1}
+  .row > span:not(:first-child):not(:last-child){opacity:0.55}
   .row > span:empty{display:none}
   .detail .inner{grid-template-columns:minmax(0,1fr);row-gap:1.5em}
   .detail .text,.detail .images{grid-column:1}

@@ -24,6 +24,12 @@ export const entry = {
         ),
     },
     {
+      name: 'artist',
+      title: 'Artist',
+      type: 'string',
+      description: 'Optional. When filled in, the title reads "Artist: Project".',
+    },
+    {
       name: 'project',
       title: 'Project',
       type: 'string',
@@ -90,9 +96,9 @@ export const entry = {
   ],
   orderings: [{title: 'Year, newest first', name: 'yearDesc', by: [{field: 'year', direction: 'desc'}]}],
   preview: {
-    select: {project: 'project', year: 'year', category: 'category', space: 'space', upcoming: 'upcoming'},
-    prepare: ({project, year, category, space, upcoming}) => ({
-      title: project,
+    select: {artist: 'artist', project: 'project', year: 'year', category: 'category', space: 'space', upcoming: 'upcoming'},
+    prepare: ({artist, project, year, category, space, upcoming}) => ({
+      title: [artist, project].filter(Boolean).join(': '),
       subtitle: [upcoming && 'UPCOMING', year, category, space].filter(Boolean).join(' · '),
     }),
   },
