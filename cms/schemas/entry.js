@@ -40,7 +40,7 @@ export const entry = {
       name: 'projectItalic',
       title: 'Italic',
       type: 'boolean',
-      description: 'Shows the project title in italics.',
+      description: 'Shows the whole title, including the artist, in italics.',
       initialValue: false,
     },
     {

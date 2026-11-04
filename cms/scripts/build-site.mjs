@@ -26,10 +26,10 @@ const paragraphsOf = (text) => (text ?? '').split(/\n\s*\n/).map((p) => p.trim()
 const isUrl = (url) => /^https?:\/\/\S+$/i.test((url ?? '').trim())
 const safeLink = (url) => (isUrl(url) ? attr(url.trim()) : null)
 const titleOf = (e) => [e.artist, e.project].map((v) => (v ?? '').trim()).filter(Boolean).join(': ')
-// The title as HTML: the project part is italic when "Italic" is ticked.
+// The title as HTML, in italics when "Italic" is ticked.
 const titleHtml = (e) => {
-  const project = escape((e.project ?? '').trim())
-  return [escape((e.artist ?? '').trim()), project && e.projectItalic ? `<em>${project}</em>` : project].filter(Boolean).join(': ')
+  const title = escape(titleOf(e))
+  return title && e.projectItalic ? `<em>${title}</em>` : title
 }
 
 // Newest first by starting year, TBC last. Within a year, imported rows keep their
