@@ -37,6 +37,13 @@ export const entry = {
       validation: (rule) => rule.required(),
     },
     {
+      name: 'projectItalic',
+      title: 'Italic',
+      type: 'boolean',
+      description: 'Shows the project title in italics.',
+      initialValue: false,
+    },
+    {
       name: 'category',
       title: 'Category',
       type: 'string',

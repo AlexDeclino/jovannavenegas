@@ -26,6 +26,11 @@ const paragraphsOf = (text) => (text ?? '').split(/\n\s*\n/).map((p) => p.trim()
 const isUrl = (url) => /^https?:\/\/\S+$/i.test((url ?? '').trim())
 const safeLink = (url) => (isUrl(url) ? attr(url.trim()) : null)
 const titleOf = (e) => [e.artist, e.project].map((v) => (v ?? '').trim()).filter(Boolean).join(': ')
+// The title as HTML: the project part is italic when "Italic" is ticked.
+const titleHtml = (e) => {
+  const project = escape((e.project ?? '').trim())
+  return [escape((e.artist ?? '').trim()), project && e.projectItalic ? `<em>${project}</em>` : project].filter(Boolean).join(': ')
+}
 
 // Newest first by starting year, TBC last. Within a year, imported rows keep their
 // original order and new entries (no `order`) go on top, newest first.
@@ -63,7 +68,7 @@ const spans = (cells) => cells.map((c) => `<span>${c}</span>`).join('')
 // Upcoming entries show only their year; nothing else about them is written out.
 function listRow(e) {
   if (e.upcoming) return `<div class="e upcoming" role="listitem"><div class="row">${spans(['<span class="bar">Upcoming</span>', '', '', '', cell(e.year)])}</div></div>`
-  const cells = spans([titleOf(e), e.scope, e.space, e.location, e.year].map((v) => escape((v ?? '').trim())))
+  const cells = spans([titleHtml(e), ...[e.scope, e.space, e.location, e.year].map((v) => escape((v ?? '').trim()))])
   const href = safeLink(e.link)
   const paragraphs = paragraphsOf(e.description).map((p) => `<p>${escape(p).replace(/\n/g, '<br>')}</p>`)
   const images = (e.images ?? []).slice(0, 3).map((img) => imageTag(img, titleOf(e))).filter(Boolean)
@@ -165,7 +170,7 @@ const pdfRow = (role, cells) =>
 
 function pdfEntry(e) {
   if (e.upcoming) return `<div class="r upcoming" role="row"><span role="cell">${cell(e.year)}</span>${['UPCOMING', '', '', ''].map((t) => `<span role="cell"><span class="bar">${t}</span></span>`).join('')}</div>`
-  const cells = [e.year, titleOf(e), e.location, e.space, e.scope].map(cell)
+  const cells = [cell(e.year), titleHtml(e) || '—', ...[e.location, e.space, e.scope].map(cell)]
   const href = safeLink(e.link)
   if (href) cells[1] = `<a href="${href}">${cells[1]}</a>`
   return pdfRow('cell', cells)
